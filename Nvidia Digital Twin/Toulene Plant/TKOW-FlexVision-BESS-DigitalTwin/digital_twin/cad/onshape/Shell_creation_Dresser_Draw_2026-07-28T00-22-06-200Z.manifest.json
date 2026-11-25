@@ -1,0 +1,23 @@
+{
+  "exportedAt": "2026-07-28T00:22:06.642Z",
+  "source": {
+    "documentId": "86949e274243082c5a383caf",
+    "workspaceId": "297ea7eccf639bff80190ffc",
+    "elementId": "ce01b122ac24b9599bb06554",
+    "elementName": "Dresser/Draw",
+    "elementType": "PARTSTUDIO"
+  },
+  "files": [
+    {
+      "format": "stl",
+      "path": "digital_twin/cad/onshape/Shell_creation_Dresser_Draw_2026-07-28T00-22-06-200Z.stl",
+      "bytes": 1284
+    },
+    {
+      "format": "gltf",
+      "path": "digital_twin/cad/onshape/Shell_creation_Dresser_Draw_2026-07-28T00-22-06-200Z.gltf",
+      "bytes": 2864
+    }
+  ],
+  "errors": []
+}

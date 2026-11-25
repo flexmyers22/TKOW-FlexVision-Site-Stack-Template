@@ -1,0 +1,88 @@
+toluene-cuda-smart-facility/
+│
+├── README.md
+├── package.json
+├── .env.example
+│
+├── database/
+│   ├── schema/
+│   │   ├── 001_core_schema.sql
+│   │   ├── 002_toluene_equipment.sql
+│   │   ├── 003_cuda_tiles.sql
+│   │   ├── 004_binary_performance.sql
+│   │   └── 005_energy_metrics.sql
+│   │
+│   ├── seeds/
+│   │   ├── binary_dictionary_seed.sql
+│   │   ├── equipment_seed.sql
+│   │   └── cuda_tile_seed.sql
+│   │
+│   └── queries/
+│       ├── get_equipment_state.sql
+│       ├── update_binary_state.sql
+│       └── get_cuda_tile_map.sql
+│
+├── plant/
+│   ├── aspen/
+│   │   ├── disproportionation_of_toluene.pdf
+│   │   └── flowsheet_reference.md
+│   │
+│   ├── equipment/
+│   │   ├── R101_reactor.json
+│   │   ├── P101_feed_pump.json
+│   │   ├── H101_heater.json
+│   │   ├── C101_column.json
+│   │   └── T101_toluene_tank.json
+│   │
+│   ├── glb/
+│   │   ├── R101.glb
+│   │   ├── P101.glb
+│   │   ├── H101.glb
+│   │   └── C101.glb
+│   │
+│   └── excel/
+│       └── toluene_plant_control_database.xlsx
+│
+├── cuda/
+│   ├── kernels/
+│   │   ├── binary_state_kernel.cu
+│   │   ├── thermal_state_kernel.cu
+│   │   ├── flow_balance_kernel.cu
+│   │   └── energy_metrics_kernel.cu
+│   │
+│   ├── memory/
+│   │   ├── cuda_memory_map.json
+│   │   └── tile_registers.json
+│   │
+│   └── benchmarks/
+│       ├── benchmark_runner.cpp
+│       └── results/
+│
+├── src/
+│   ├── db/
+│   │   ├── supabaseClient.ts
+│   │   └── queries.ts
+│   │
+│   ├── services/
+│   │   ├── jsonToExcelSync.ts
+│   │   ├── excelToDatabaseSync.ts
+│   │   ├── binaryCompiler.ts
+│   │   ├── cudaTileMapper.ts
+│   │   └── energyMetricLogger.ts
+│   │
+│   ├── viewer/
+│   │   ├── glbLoader.ts
+│   │   ├── componentOverlay.ts
+│   │   └── binaryStatusOverlay.ts
+│   │
+│   └── types/
+│       ├── equipment.ts
+│       ├── binary.ts
+│       ├── cuda.ts
+│       └── metrics.ts
+│
+└── n8n/
+    ├── json_to_excel_sync.json
+    ├── excel_to_supabase_sync.json
+    ├── cuda_metrics_logger.json
+    └── alert_state_workflow.json

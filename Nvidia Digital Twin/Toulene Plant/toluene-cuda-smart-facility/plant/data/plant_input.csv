@@ -1,0 +1,6 @@
+equipment_tag,equipment_type,process_area,binary_status,kernel_name,upstream,downstream,feed_rate_lb_hr,molar_flow_lbmol_hr,suction_pressure_psi,discharge_pressure_psi,reactor_delivery_psi,motor_power_kw,hydraulic_power_w,duty_w,furnace_outlet_temp_f,heat_transfer_area_m2,tube_count,conversion_pct,feed_pressure_psia,operating_temp_f,h2_flow_lbmol_hr,diameter_m,height_m,tray_count,reflux_ratio,reboiler_duty_w
+T101,tank,STORAGE,10010101,binary_state_kernel.cu,,P101,10000,108.5,14.69,,,,,,,,,,,,,,,,,
+P101,pump,FEED,10010110,flow_balance_kernel.cu,T101,H101,,,,270,215,4.3,2557,,,,,,,,,,,,,
+H101,heater,HEAT,10011010,thermal_state_kernel.cu,P101,R101,,,,,,,,3848817,1000,30,78,,,,,,,,,
+R101,reactor,RXN,10011110,thermal_state_kernel.cu,H101,C101,10000,,,,,,,,,,,30,215,1000,1780,,,,,
+C101,column,SEP,10010110,flow_balance_kernel.cu,R101,,,,,,,,,,,,,,,,,5.29,42.31,69,5.0,1196790

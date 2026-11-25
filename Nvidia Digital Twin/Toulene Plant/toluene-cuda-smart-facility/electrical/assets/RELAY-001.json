@@ -1,0 +1,18 @@
+{
+  "asset_id": "RELAY-001",
+  "asset_type": "protection_relay",
+  "primary_function": "Fault detection and trip logic",
+  "protects": [
+    "SWGR-001",
+    "BUS-001",
+    "BESS-001"
+  ],
+  "cuda_tile": "CUDA_TILE_SAFETY",
+  "usd_prim": "/Site/ElectricalSubstation/RELAY_001",
+  "comms": {
+    "protocol": "IEC61850",
+    "role": "protection",
+    "endpoint": "10.20.1.50",
+    "goose": true
+  }
+}

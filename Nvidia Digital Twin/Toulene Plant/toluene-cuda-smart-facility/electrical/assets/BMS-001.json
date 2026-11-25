@@ -1,0 +1,14 @@
+{
+  "asset_id": "BMS-001",
+  "asset_type": "battery_management_system",
+  "primary_function": "Battery monitoring and protection",
+  "parent": "BESS-001",
+  "cuda_tile": "CUDA_TILE_ENERGY",
+  "usd_prim": "/Site/ElectricalSubstation/BESS_001/BMS_001",
+  "comms": {
+    "protocol": "CAN",
+    "role": "bms",
+    "endpoint": "can0",
+    "node_id": 2
+  }
+}

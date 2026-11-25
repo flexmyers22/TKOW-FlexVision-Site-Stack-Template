@@ -1,0 +1,6 @@
+create table digital_thread_edges (
+    id uuid primary key,
+    source_object text,
+    target_object text,
+    relationship_type text
+);

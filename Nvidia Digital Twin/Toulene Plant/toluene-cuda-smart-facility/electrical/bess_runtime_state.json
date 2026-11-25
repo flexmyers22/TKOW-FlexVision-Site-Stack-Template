@@ -1,0 +1,99 @@
+{
+  "generated_at": "2026-07-27T16:14:32.875Z",
+  "project_id": "TKOW-FV-BESS-DT-001",
+  "asset": {
+    "asset_id": "BESS-001",
+    "project_id": "TKOW-FV-BESS-DT-001",
+    "asset_type": "battery_energy_storage_system",
+    "qualification_boundary": "ac_terminals_pcs_inclusive",
+    "operating_mode": "standby",
+    "rated_power_mw": null,
+    "rated_energy_mwh": null,
+    "ac_voltage_v": null,
+    "frequency_hz": 60,
+    "state_of_charge_pct": null,
+    "active_power_mw": 0,
+    "reactive_power_mvar": 0,
+    "current_a": 0,
+    "current_limit_active": false,
+    "grid_connected": true,
+    "island_capable": true,
+    "black_start_capable": true,
+    "telemetry_status": "not_connected",
+    "binary_status": "00000000",
+    "primary_function": "Complete storage asset",
+    "binary_bits": {
+      "0": {
+        "mask": "00000001",
+        "code": "TELEM",
+        "label": "Telemetry active"
+      },
+      "1": {
+        "mask": "00000010",
+        "code": "GRID",
+        "label": "Grid connected"
+      },
+      "2": {
+        "mask": "00000100",
+        "code": "CHARGE",
+        "label": "Battery charging"
+      },
+      "3": {
+        "mask": "00001000",
+        "code": "DISCHARGE",
+        "label": "Battery discharging"
+      },
+      "4": {
+        "mask": "00010000",
+        "code": "I_LIMIT",
+        "label": "Current limit active"
+      },
+      "5": {
+        "mask": "00100000",
+        "code": "ISLAND",
+        "label": "Island mode active"
+      },
+      "6": {
+        "mask": "01000000",
+        "code": "WARN",
+        "label": "Warning present"
+      },
+      "7": {
+        "mask": "10000000",
+        "code": "TRIP",
+        "label": "Trip or emergency shutdown"
+      }
+    },
+    "cuda_tile": "CUDA_TILE_ENERGY",
+    "usd_prim": "/Site/ElectricalSubstation/BESS_001",
+    "children": [
+      "PCS-001",
+      "BAT-RACK-001",
+      "BMS-001"
+    ],
+    "comms": {
+      "protocol": "ModbusTCP",
+      "role": "aggregator",
+      "endpoint": "10.20.2.1:502",
+      "unit_id": 10
+    },
+    "notes": {
+      "qualification_boundary": "Digital twin and performance qualification include AC terminals through PCS (PCS-inclusive).",
+      "null_ratings": "rated_power_mw / rated_energy_mwh / ac_voltage_v / SOC pending nameplate + BMS telemetry.",
+      "telemetry_status": "not_connected until CTRL-001 / Modbus link is live — binary stays 00000000."
+    }
+  },
+  "decoded_binary": {
+    "TELEM": false,
+    "GRID": false,
+    "CHARGE": false,
+    "DISCHARGE": false,
+    "I_LIMIT": false,
+    "ISLAND": false,
+    "WARN": false,
+    "TRIP": false
+  },
+  "cuda_tile": "CUDA_TILE_ENERGY",
+  "usd_prim": "/Site/ElectricalSubstation/BESS_001",
+  "qualification_boundary": "ac_terminals_pcs_inclusive"
+}

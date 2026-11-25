@@ -1,0 +1,20 @@
+{
+  "name": "tkow-flexvision-bess-digitaltwin",
+  "version": "0.1.0",
+  "private": true,
+  "description": "TKOW FlexVision BESS Digital Twin — TKOW-FV-BESS-DT-001",
+  "workspaces": [
+    "frontend",
+    "backend"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=backend & npm run dev --workspace=frontend",
+    "dev:backend": "npm run dev --workspace=backend",
+    "dev:frontend": "npm run dev --workspace=frontend",
+    "analyze": "npm run analyze --workspace=backend",
+    "onshape:ping": "npm run onshape:ping --workspace=backend",
+    "onshape:export": "npm run onshape:export --workspace=backend",
+    "onshape:find": "npm run onshape:find --workspace=backend",
+    "build": "npm run build --workspaces --if-present"
+  }
+}

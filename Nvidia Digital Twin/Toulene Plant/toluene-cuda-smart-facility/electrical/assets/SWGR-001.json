@@ -1,0 +1,13 @@
+{
+  "asset_id": "SWGR-001",
+  "asset_type": "main_switchgear",
+  "primary_function": "Isolation and protection",
+  "voltage_v": 480,
+  "cuda_tile": "CUDA_TILE_ELECTRICAL",
+  "usd_prim": "/Site/ElectricalSubstation/SWGR_001",
+  "comms": {
+    "protocol": "IEC61850",
+    "role": "switchgear",
+    "endpoint": "10.20.1.20"
+  }
+}

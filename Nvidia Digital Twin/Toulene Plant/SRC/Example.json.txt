@@ -1,0 +1,11 @@
+{
+  "feature_type":"extrude",
+  "depth":25,
+  "direction":"positive_z"
+}
+
+{
+  "feature_type":"hole",
+  "diameter":6.35,
+  "depth":20
+}

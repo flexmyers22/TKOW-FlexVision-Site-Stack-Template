@@ -1,0 +1,3 @@
+-- 002_information_model.sql
+-- Apply full hierarchy (organizations → qualification)
+-- Prefer: psql -f database/schema.sql && psql -f database/seed.sql

@@ -1,0 +1,14 @@
+{
+  "asset_id": "MTR-001",
+  "asset_type": "electrical_meter",
+  "primary_function": "Independent measurement",
+  "voltage_v": 480,
+  "cuda_tile": "CUDA_TILE_ELECTRICAL",
+  "usd_prim": "/Site/ElectricalSubstation/MTR_001",
+  "comms": {
+    "protocol": "ModbusTCP",
+    "role": "meter",
+    "endpoint": "10.20.1.30:502",
+    "unit_id": 5
+  }
+}

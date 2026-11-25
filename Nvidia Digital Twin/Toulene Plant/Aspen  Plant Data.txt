@@ -1,0 +1,15 @@
+Aspen / Plant Data
+        ↓
+Equipment JSON
+        ↓
+Excel Control Workbook
+        ↓
+Supabase Database
+        ↓
+Binary State Compiler
+        ↓
+CUDA Tile Map
+        ↓
+GPU Kernel Processing
+        ↓
+GLB Digital Twin Viewer

@@ -1,0 +1,14 @@
+PART_BASE_001
+
+10001000
+00000001
+
+PART = 10001000
+
+insert into binary_namespaces
+(namespace,binary_prefix,description)
+values
+('PART','10001000','Mechanical Part'),
+('ASSEMBLY','10001001','Mechanical Assembly'),
+('DRAWING','10001010','Engineering Drawing'),
+('BOM','10001011','Bill Of Materials');

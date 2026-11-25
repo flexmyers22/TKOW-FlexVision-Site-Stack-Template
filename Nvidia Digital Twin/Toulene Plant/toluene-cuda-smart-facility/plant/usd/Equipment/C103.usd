@@ -1,0 +1,16 @@
+#usda 1.0
+(
+    defaultPrim = "C103"
+)
+
+def Xform "C103" (
+    assetInfo = {
+        string equipmentTag = "C103"
+        string equipmentType = "distillation_column"
+        string cudaTile = "CUDA_TILE_C103"
+        string glbViewer = "../glb/C103.glb"
+    }
+)
+{
+    def Mesh "ColumnShell" {}
+}

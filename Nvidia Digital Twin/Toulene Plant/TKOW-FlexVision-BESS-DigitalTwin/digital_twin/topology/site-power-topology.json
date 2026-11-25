@@ -1,0 +1,210 @@
+{
+  "version": "2.0",
+  "facility": "TKOW Toluene Digital Twin — Site Power + BESS",
+  "cuda_tiles": {
+    "electrical": "CUDA_TILE_ELECTRICAL",
+    "energy": "CUDA_TILE_ENERGY",
+    "safety": "CUDA_TILE_SAFETY"
+  },
+  "assets": [
+    {
+      "asset_id": "GRID-001",
+      "asset_type": "utility_grid",
+      "primary_function": "External voltage and frequency source",
+      "voltage_v": 13800,
+      "cuda_tile": "CUDA_TILE_ELECTRICAL",
+      "usd_prim": "/Site/ElectricalSubstation/GRID_001",
+      "glb": null,
+      "comms": { "protocol": "DNP3", "role": "source", "endpoint": "grid.scada.local:20000" }
+    },
+    {
+      "asset_id": "XFMR-001",
+      "asset_type": "site_transformer",
+      "primary_function": "Voltage transformation",
+      "voltage_primary_v": 13800,
+      "voltage_secondary_v": 480,
+      "power_kva": 2500,
+      "cuda_tile": "CUDA_TILE_ELECTRICAL",
+      "usd_prim": "/Site/ElectricalSubstation/XFMR_001",
+      "comms": { "protocol": "ModbusTCP", "role": "sensor", "endpoint": "10.20.1.10:502", "unit_id": 1 }
+    },
+    {
+      "asset_id": "SWGR-001",
+      "asset_type": "main_switchgear",
+      "primary_function": "Isolation and protection",
+      "voltage_v": 480,
+      "cuda_tile": "CUDA_TILE_ELECTRICAL",
+      "usd_prim": "/Site/ElectricalSubstation/SWGR_001",
+      "comms": { "protocol": "IEC61850", "role": "switchgear", "endpoint": "10.20.1.20" }
+    },
+    {
+      "asset_id": "BUS-001",
+      "asset_type": "site_ac_bus",
+      "primary_function": "Common electrical connection",
+      "voltage_v": 480,
+      "cuda_tile": "CUDA_TILE_ELECTRICAL",
+      "usd_prim": "/Site/ElectricalSubstation/BUS_001",
+      "comms": { "protocol": "internal", "role": "bus" }
+    },
+    {
+      "asset_id": "BESS-001",
+      "project_id": "TKOW-FV-BESS-DT-001",
+      "asset_type": "battery_energy_storage_system",
+      "primary_function": "Complete storage asset",
+      "qualification_boundary": "ac_terminals_pcs_inclusive",
+      "operating_mode": "standby",
+      "rated_power_mw": null,
+      "rated_energy_mwh": null,
+      "ac_voltage_v": null,
+      "frequency_hz": 60,
+      "state_of_charge_pct": null,
+      "active_power_mw": 0,
+      "reactive_power_mvar": 0,
+      "current_a": 0,
+      "current_limit_active": false,
+      "grid_connected": true,
+      "island_capable": true,
+      "black_start_capable": true,
+      "telemetry_status": "not_connected",
+      "binary_status": "00000000",
+      "binary_bits": {
+        "0": { "mask": "00000001", "code": "TELEM", "label": "Telemetry active" },
+        "1": { "mask": "00000010", "code": "GRID", "label": "Grid connected" },
+        "2": { "mask": "00000100", "code": "CHARGE", "label": "Battery charging" },
+        "3": { "mask": "00001000", "code": "DISCHARGE", "label": "Battery discharging" },
+        "4": { "mask": "00010000", "code": "I_LIMIT", "label": "Current limit active" },
+        "5": { "mask": "00100000", "code": "ISLAND", "label": "Island mode active" },
+        "6": { "mask": "01000000", "code": "WARN", "label": "Warning present" },
+        "7": { "mask": "10000000", "code": "TRIP", "label": "Trip or emergency shutdown" }
+      },
+      "cuda_tile": "CUDA_TILE_ENERGY",
+      "usd_prim": "/Site/ElectricalSubstation/BESS_001",
+      "children": ["PCS-001", "BAT-RACK-001", "BMS-001"],
+      "comms": { "protocol": "ModbusTCP", "role": "aggregator", "endpoint": "10.20.2.1:502", "unit_id": 10 }
+    },
+    {
+      "asset_id": "PCS-001",
+      "project_id": "TKOW-FV-BESS-DT-001",
+      "asset_type": "power_conversion_system",
+      "primary_function": "Bidirectional AC/DC control",
+      "parent": "BESS-001",
+      "timestamp": "2026-07-27T10:00:00.000-04:00",
+      "voltage_v": 480.0,
+      "current_a": 0.0,
+      "active_power_kw": 0.0,
+      "reactive_power_kvar": 0.0,
+      "frequency_hz": 60.0,
+      "soc_pct": 50.0,
+      "pcs_temperature_c": null,
+      "current_limit": false,
+      "control_mode": "grid_following",
+      "operating_state": "standby",
+      "alarm_code": null,
+      "binary_status": "00000011",
+      "cuda_tile": "CUDA_TILE_ENERGY",
+      "usd_prim": "/Site/ElectricalSubstation/BESS_001/PCS_001",
+      "comms": { "protocol": "ModbusTCP", "role": "inverter", "endpoint": "10.20.2.2:502", "unit_id": 11 }
+    },
+    {
+      "asset_id": "BAT-RACK-001",
+      "asset_type": "battery_rack",
+      "primary_function": "Energy storage",
+      "energy_kwh": 2000,
+      "parent": "BESS-001",
+      "cuda_tile": "CUDA_TILE_ENERGY",
+      "usd_prim": "/Site/ElectricalSubstation/BESS_001/BAT_RACK_001",
+      "comms": { "protocol": "CAN", "role": "rack", "endpoint": "can0", "node_id": 1 }
+    },
+    {
+      "asset_id": "BMS-001",
+      "asset_type": "battery_management_system",
+      "primary_function": "Battery monitoring and protection",
+      "parent": "BESS-001",
+      "cuda_tile": "CUDA_TILE_ENERGY",
+      "usd_prim": "/Site/ElectricalSubstation/BESS_001/BMS_001",
+      "comms": { "protocol": "CAN", "role": "bms", "endpoint": "can0", "node_id": 2 }
+    },
+    {
+      "asset_id": "MTR-001",
+      "asset_type": "electrical_meter",
+      "primary_function": "Independent measurement",
+      "voltage_v": 480,
+      "cuda_tile": "CUDA_TILE_ELECTRICAL",
+      "usd_prim": "/Site/ElectricalSubstation/MTR_001",
+      "comms": { "protocol": "ModbusTCP", "role": "meter", "endpoint": "10.20.1.30:502", "unit_id": 5 }
+    },
+    {
+      "asset_id": "GEN-001",
+      "asset_type": "generator",
+      "primary_function": "Onsite generation",
+      "voltage_v": 480,
+      "power_kw": 2000,
+      "cuda_tile": "CUDA_TILE_ELECTRICAL",
+      "usd_prim": "/Site/ElectricalSubstation/GEN_001",
+      "comms": { "protocol": "ModbusTCP", "role": "genset", "endpoint": "10.20.1.40:502", "unit_id": 20 }
+    },
+    {
+      "asset_id": "LOAD-AI-001",
+      "asset_type": "ai_compute_load",
+      "primary_function": "Rapid transient electrical demand",
+      "voltage_v": 480,
+      "power_kw": 800,
+      "cuda_tile": "CUDA_TILE_ENERGY",
+      "usd_prim": "/Site/ElectricalSubstation/LOAD_AI_001",
+      "comms": { "protocol": "ModbusTCP", "role": "load", "endpoint": "10.20.3.1:502", "unit_id": 30 }
+    },
+    {
+      "asset_id": "RELAY-001",
+      "asset_type": "protection_relay",
+      "primary_function": "Fault detection and trip logic",
+      "protects": ["SWGR-001", "BUS-001", "BESS-001"],
+      "cuda_tile": "CUDA_TILE_SAFETY",
+      "usd_prim": "/Site/ElectricalSubstation/RELAY_001",
+      "comms": { "protocol": "IEC61850", "role": "protection", "endpoint": "10.20.1.50", "goose": true }
+    },
+    {
+      "asset_id": "CTRL-001",
+      "asset_type": "site_controller",
+      "primary_function": "Supervisory dispatch and mode control",
+      "modes": ["grid_following", "islanded", "bess_peak_shave", "ai_buffer"],
+      "cuda_tile": "CUDA_TILE_ELECTRICAL",
+      "usd_prim": "/Site/ElectricalSubstation/CTRL_001",
+      "comms": { "protocol": "MQTT", "role": "supervisor", "endpoint": "mqtt://10.20.0.1:1883", "topic_prefix": "tkow/power/" }
+    }
+  ],
+  "power_graph": [
+    { "from": "GRID-001", "to": "XFMR-001", "type": "ac_feed", "stream": "GRID_HV" },
+    { "from": "XFMR-001", "to": "SWGR-001", "type": "ac_feed", "stream": "XFMR_LV" },
+    { "from": "GEN-001", "to": "SWGR-001", "type": "ac_feed", "stream": "GEN_IN" },
+    { "from": "SWGR-001", "to": "BUS-001", "type": "ac_feed", "stream": "SWGR_TO_BUS" },
+    { "from": "BUS-001", "to": "MTR-001", "type": "meter_tap", "stream": "BUS_METER" },
+    { "from": "BUS-001", "to": "LOAD-AI-001", "type": "load_feed", "stream": "AI_LOAD" },
+    { "from": "BUS-001", "to": "LOAD-PROCESS", "type": "load_feed", "stream": "PROCESS_LOAD" },
+    { "from": "BUS-001", "to": "BESS-001", "type": "breaker_path", "stream": "BESS_AC", "bidirectional": true },
+    { "from": "BESS-001", "to": "PCS-001", "type": "ac_dc", "stream": "PCS_LINK", "bidirectional": true },
+    { "from": "PCS-001", "to": "BAT-RACK-001", "type": "dc_link", "stream": "DC_RACK", "bidirectional": true },
+    { "from": "BAT-RACK-001", "to": "BMS-001", "type": "sense", "stream": "BMS_SENSE" },
+    { "from": "RELAY-001", "to": "SWGR-001", "type": "trip", "stream": "RELAY_TRIP" },
+    { "from": "CTRL-001", "to": "PCS-001", "type": "dispatch", "stream": "CTRL_PCS" },
+    { "from": "CTRL-001", "to": "GEN-001", "type": "dispatch", "stream": "CTRL_GEN" },
+    { "from": "CTRL-001", "to": "BESS-001", "type": "dispatch", "stream": "CTRL_BESS" }
+  ],
+  "process_mcc": [
+    { "breaker": "BRK-P101", "equipment": "P101", "panel": "MCC-1", "fed_from": "LOAD-PROCESS" },
+    { "breaker": "BRK-H101", "equipment": "H101", "panel": "MCC-1", "fed_from": "LOAD-PROCESS" },
+    { "breaker": "BRK-R101", "equipment": "R101", "panel": "MCC-1", "fed_from": "LOAD-PROCESS" },
+    { "breaker": "BRK-C101", "equipment": "C101", "panel": "MCC-2", "fed_from": "LOAD-PROCESS" },
+    { "breaker": "BRK-C102", "equipment": "C102", "panel": "MCC-2", "fed_from": "LOAD-PROCESS" },
+    { "breaker": "BRK-C103", "equipment": "C103", "panel": "MCC-2", "fed_from": "LOAD-PROCESS" }
+  ],
+  "alias_legacy": {
+    "UTIL-GRID": "GRID-001",
+    "GEN-01": "GEN-001",
+    "SWG-MAIN": "SWGR-001",
+    "BUS-SITE-AC": "BUS-001",
+    "PCS-01": "PCS-001",
+    "BESS-01": "BESS-001",
+    "BMS-01": "BMS-001",
+    "LOAD-AI": "LOAD-AI-001"
+  }
+}

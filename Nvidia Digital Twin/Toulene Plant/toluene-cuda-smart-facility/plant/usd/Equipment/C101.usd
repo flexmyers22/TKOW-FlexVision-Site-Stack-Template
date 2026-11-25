@@ -1,0 +1,20 @@
+#usda 1.0
+(
+    defaultPrim = "C101"
+)
+
+def Xform "C101" (
+    assetInfo = {
+        string equipmentTag = "C101"
+        string equipmentType = "distillation_column"
+        string cudaTile = "CUDA_TILE_C101"
+        string glbViewer = "../glb/C101.glb"
+    }
+)
+{
+    def Mesh "ColumnShell" {}
+    def Scope "Sensors" {
+        def Attribute "flow" ( customData = { string sensorTag = "FT102" } )
+        def Attribute "level" ( customData = { string sensorTag = "LT102" } )
+    }
+}

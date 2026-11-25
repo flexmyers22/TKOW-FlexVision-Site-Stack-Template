@@ -1,0 +1,136 @@
+{
+  "source": {
+    "title": "Property Management",
+    "file": "plant/excel/Property_Management.xlsx",
+    "pdf": "plant/excel/Property_Management.pdf",
+    "powered_by": "Flex-Vision",
+    "synced_at": "2026-08-21",
+    "workbook_sheets": [
+      "Jaylin Myers",
+      "Electrical rating",
+      "Safety",
+      "Phase wiring table",
+      "Pump",
+      "Motor",
+      "Charts",
+      "Pivot Table",
+      "Periodic Table",
+      "Land",
+      "Plant Layout",
+      "Waves",
+      "Binary Mapping",
+      "Vendor List",
+      "Product",
+      "Design",
+      "Server",
+      "Production order",
+      "Time",
+      "Distallation"
+    ]
+  },
+  "layout_labels": [
+    {
+      "row": 2,
+      "col": 9,
+      "label": "Graphics Film Division"
+    },
+    {
+      "row": 5,
+      "col": 11,
+      "label": "Plate Room"
+    },
+    {
+      "row": 6,
+      "col": 2,
+      "label": "Imager"
+    },
+    {
+      "row": 7,
+      "col": 17,
+      "label": "Thermal"
+    },
+    {
+      "row": 22,
+      "col": 9,
+      "label": "EVO"
+    },
+    {
+      "row": 41,
+      "col": 1,
+      "label": "Toluene Production Floor"
+    }
+  ],
+  "vendors": [
+    {
+      "name": "Myers Industries",
+      "type": "Plastic"
+    },
+    {
+      "name": "XSYS Global",
+      "type": "Photopolyemer"
+    },
+    {
+      "name": "NextEra Energy",
+      "type": "Energy"
+    },
+    {
+      "name": "International Paper",
+      "type": "Pulp and Paper"
+    },
+    {
+      "name": "ATL Hawks",
+      "type": "Entertainment"
+    },
+    {
+      "name": "WeParlay",
+      "type": "Technology"
+    },
+    {
+      "name": "MilliPore Sigma",
+      "type": "Chemicals"
+    }
+  ],
+  "products": [
+    "Polyester",
+    "Polyethelyne"
+  ],
+  "production_orders": [
+    {
+      "Number": 1,
+      "Type": "Chemical",
+      "Name": "Toluene",
+      "Reason": "Storage for the digital plant",
+      "Submission": 1.4004636669536e+17,
+      "Vendor": "MillaPore Sigma"
+    }
+  ],
+  "facilities": [
+    {
+      "facility_id": "FV-TOLUENE-001",
+      "name": "Toluene Plant",
+      "layout_label": "Toluene Production Floor",
+      "status": "digital_twin_active"
+    },
+    {
+      "facility_id": "FV-PLASTIC-001",
+      "name": "Plastic Plant",
+      "products": [
+        "Polyester",
+        "Polyethelyne"
+      ],
+      "status": "workbook_defined"
+    },
+    {
+      "facility_id": "FV-GRAPHICS-PLATE-001",
+      "name": "Graphics Plate Room",
+      "division": "Graphics Film Division",
+      "areas": [
+        "Plate Room",
+        "Imager",
+        "Thermal",
+        "EVO"
+      ],
+      "status": "workbook_defined"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "part_number": "TKOW-TOL-RXN-REACTOR-101-A",
+  "equipment_tag": "R101",
+  "equipment_type": "reactor",
+  "process_area": "RXN",
+  "geometry_file": "R101.glb",
+  "excel_sheet": "Equipment",
+  "excel_range": "Equipment!A6:M6",
+  "binary_status": "00001000",
+  "cuda_tile_id": "CUDA_TILE_R101",
+  "kernel_name": "thermal_state_kernel.cu",
+  "memory_block": "R101_BLOCK",
+  "upstream": ["H101"],
+  "downstream": ["C101"],
+  "metadata": {
+    "design_source": "Disproportionation of Toluene senior design PDF",
+    "ocr_pages": [30, 32, 33],
+    "reactor_type": "plug_flow",
+    "conversion_pct": 30,
+    "feed_rate_lb_hr": 10000,
+    "feed_pressure_psia": 215,
+    "operating_temp_f": 1000,
+    "molar_flow_lbmol_hr": 108.5,
+    "h2_flow_lbmol_hr": 1780,
+    "toluene_volumetric_flow_ft3_hr": 185,
+    "reactor_volume_ft3": 185,
+    "reactor_length_ft": 62,
+    "capital_cost_usd": 53790
+  }
+}

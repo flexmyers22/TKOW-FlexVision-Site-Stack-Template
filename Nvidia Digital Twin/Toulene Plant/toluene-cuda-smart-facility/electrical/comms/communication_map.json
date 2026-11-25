@@ -1,0 +1,129 @@
+{
+  "version": "1.0",
+  "description": "Electrical communication layer — who talks to whom for the BESS digital twin",
+  "supervisor": "CTRL-001",
+  "buses": {
+    "scada": { "protocol": "DNP3/IEC61850", "subnet": "10.20.1.0/24" },
+    "bess": { "protocol": "ModbusTCP + CAN", "subnet": "10.20.2.0/24" },
+    "ai_load": { "protocol": "ModbusTCP", "subnet": "10.20.3.0/24" },
+    "mqtt_dispatch": { "broker": "10.20.0.1:1883", "topic_prefix": "tkow/power/" }
+  },
+  "channels": [
+    {
+      "id": "CH-GRID",
+      "from": "GRID-001",
+      "to": "CTRL-001",
+      "protocol": "DNP3",
+      "signals": ["V_ll", "f_hz", "P_import_kw", "Q_kvar"],
+      "update_ms": 1000
+    },
+    {
+      "id": "CH-XFMR",
+      "from": "XFMR-001",
+      "to": "CTRL-001",
+      "protocol": "ModbusTCP",
+      "signals": ["V_pri", "V_sec", "I_sec", "temp_c", "tap"],
+      "update_ms": 500
+    },
+    {
+      "id": "CH-SWGR",
+      "from": "SWGR-001",
+      "to": "CTRL-001",
+      "protocol": "IEC61850",
+      "signals": ["breaker_status", "isolator_status", "fault_flag"],
+      "update_ms": 100
+    },
+    {
+      "id": "CH-RELAY",
+      "from": "RELAY-001",
+      "to": ["SWGR-001", "CTRL-001"],
+      "protocol": "IEC61850-GOOSE",
+      "signals": ["trip", "pickup", "fault_type"],
+      "update_ms": 4,
+      "priority": "safety"
+    },
+    {
+      "id": "CH-MTR",
+      "from": "MTR-001",
+      "to": "CTRL-001",
+      "protocol": "ModbusTCP",
+      "signals": ["V", "I", "P_kw", "Q_kvar", "PF", "energy_kwh"],
+      "update_ms": 200,
+      "note": "Independent measurement for settlement / twin validation"
+    },
+    {
+      "id": "CH-GEN",
+      "from": "GEN-001",
+      "to": "CTRL-001",
+      "protocol": "ModbusTCP",
+      "signals": ["run", "P_kw", "f_hz", "V", "fuel_pct"],
+      "commands": ["start", "stop", "set_kw"],
+      "update_ms": 250
+    },
+    {
+      "id": "CH-PCS",
+      "from": "PCS-001",
+      "to": "CTRL-001",
+      "protocol": "ModbusTCP",
+      "signals": ["mode", "P_ac_kw", "Q_ac_kvar", "V_dc", "I_dc", "fault"],
+      "commands": ["charge", "discharge", "idle", "set_kw"],
+      "update_ms": 50
+    },
+    {
+      "id": "CH-BMS",
+      "from": "BMS-001",
+      "to": ["PCS-001", "CTRL-001"],
+      "protocol": "CAN",
+      "signals": ["soc_pct", "soh_pct", "cell_v_min", "cell_v_max", "temp_max_c", "contactor"],
+      "update_ms": 100
+    },
+    {
+      "id": "CH-RACK",
+      "from": "BAT-RACK-001",
+      "to": "BMS-001",
+      "protocol": "CAN",
+      "signals": ["module_voltages", "module_temps", "balance_status"],
+      "update_ms": 200
+    },
+    {
+      "id": "CH-AI",
+      "from": "LOAD-AI-001",
+      "to": "CTRL-001",
+      "protocol": "ModbusTCP",
+      "signals": ["P_kw", "ramp_kw_s", "demand_forecast_kw"],
+      "update_ms": 100,
+      "note": "Rapid transient demand — drives BESS peak-shave / buffer mode"
+    },
+    {
+      "id": "CH-BESS-AGG",
+      "from": "BESS-001",
+      "to": "CTRL-001",
+      "protocol": "ModbusTCP",
+      "signals": ["available_kw", "soc_pct", "state"],
+      "update_ms": 100
+    },
+    {
+      "id": "CH-DISPATCH",
+      "from": "CTRL-001",
+      "to": ["PCS-001", "GEN-001", "BESS-001", "SWGR-001"],
+      "protocol": "MQTT",
+      "topic": "tkow/power/dispatch",
+      "commands": ["mode", "setpoints", "island", "grid_follow"],
+      "update_ms": 100
+    }
+  ],
+  "modes": {
+    "grid_following": ["GRID-001", "XFMR-001", "SWGR-001", "BUS-001", "BESS-001"],
+    "islanded": ["GEN-001", "SWGR-001", "BUS-001", "BESS-001", "LOAD-AI-001"],
+    "bess_peak_shave": ["BESS-001", "PCS-001", "MTR-001", "LOAD-AI-001"],
+    "ai_buffer": ["LOAD-AI-001", "PCS-001", "BMS-001", "CTRL-001"]
+  },
+  "digital_twin_pipeline": [
+    "Field asset (Modbus / IEC61850 / CAN / DNP3)",
+    "CTRL-001 site controller",
+    "Supabase electrical_dt_assets + site_power_*",
+    "CUDA_TILE_ELECTRICAL / CUDA_TILE_ENERGY / CUDA_TILE_SAFETY",
+    "USD ElectricalSubstation prims",
+    "Omniverse digital twin refresh"
+  ]
+}

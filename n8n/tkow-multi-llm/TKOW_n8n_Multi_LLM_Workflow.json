@@ -1,0 +1,170 @@
+{
+  "name": "TKOW Excel Multi-LLM Router",
+  "nodes": [
+    {
+      "id": "1",
+      "name": "Search Models",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        200,
+        160
+      ],
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "tkow/models",
+        "responseMode": "responseNode",
+        "options": {}
+      }
+    },
+    {
+      "id": "2",
+      "name": "Read Excel Model Registry",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        440,
+        160
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "http://host.docker.internal:8787/models",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{$env.TKOW_BRIDGE_TOKEN}}"
+            }
+          ]
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "3",
+      "name": "Return Models",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        680,
+        160
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      }
+    },
+    {
+      "id": "4",
+      "name": "Chat Prompt",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        200,
+        420
+      ],
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "tkow/chat",
+        "responseMode": "responseNode",
+        "options": {}
+      }
+    },
+    {
+      "id": "5",
+      "name": "Route Selected Model",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        440,
+        420
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "http://host.docker.internal:8787/chat",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "=Bearer {{$env.TKOW_BRIDGE_TOKEN}}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.body) }}",
+        "options": {}
+      }
+    },
+    {
+      "id": "6",
+      "name": "Return Chat Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        680,
+        420
+      ],
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      }
+    }
+  ],
+  "connections": {
+    "Search Models": {
+      "main": [
+        [
+          {
+            "node": "Read Excel Model Registry",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Excel Model Registry": {
+      "main": [
+        [
+          {
+            "node": "Return Models",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chat Prompt": {
+      "main": [
+        [
+          {
+            "node": "Route Selected Model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Route Selected Model": {
+      "main": [
+        [
+          {
+            "node": "Return Chat Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "active": false,
+  "pinData": {},
+  "tags": []
+}

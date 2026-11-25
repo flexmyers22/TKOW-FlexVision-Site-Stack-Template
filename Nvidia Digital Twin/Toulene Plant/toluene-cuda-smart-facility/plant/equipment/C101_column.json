@@ -1,0 +1,33 @@
+{
+  "part_number": "TKOW-TOL-COL-COLUMN-101-A",
+  "equipment_tag": "C101",
+  "equipment_type": "column",
+  "process_area": "SEP",
+  "geometry_file": "C101.glb",
+  "excel_sheet": "Equipment",
+  "excel_range": "Equipment!A9:M9",
+  "binary_status": "00000110",
+  "cuda_tile_id": "CUDA_TILE_C101",
+  "kernel_name": "flow_balance_kernel.cu",
+  "memory_block": "C101_BLOCK",
+  "upstream": ["R101"],
+  "downstream": [],
+  "metadata": {
+    "design_source": "Disproportionation of Toluene senior design PDF",
+    "ocr_pages": [11, 20, 40],
+    "column_type": "tray_column_side_distillation",
+    "diameter_m": 5.29,
+    "height_m": 42.31,
+    "tray_count": 69,
+    "flooding_velocity_m_s": 0.0623,
+    "feed_rate_lbmol_hr": 114.21,
+    "feed_temp_f": 100,
+    "feed_pressure_psi": 240,
+    "reflux_ratio": 5.0,
+    "equilibrium_stages": 10.54,
+    "reboiler_duty_w": 1196790,
+    "condenser_duty_w": 1796300,
+    "capital_cost_usd": 184615,
+    "aspen_block": "B1_DSTWU"
+  }
+}

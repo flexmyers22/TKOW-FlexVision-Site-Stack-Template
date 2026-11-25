@@ -1,0 +1,63 @@
+{
+  "version": "1.0",
+  "rule": "USD is Omniverse master; GLB is web viewer derivative",
+  "generated_at": "2026-11-20T13:23:16.472Z",
+  "assets": [
+    {
+      "equipment_tag": "T101",
+      "usd": "plant/usd/Equipment/T101.usd",
+      "glb": "plant/glb/T101.glb",
+      "shell_prim": "TankShell",
+      "bytes": 4840
+    },
+    {
+      "equipment_tag": "P101",
+      "usd": "plant/usd/Equipment/P101.usd",
+      "glb": "plant/glb/P101.glb",
+      "shell_prim": "PumpCasing",
+      "bytes": 1172
+    },
+    {
+      "equipment_tag": "H101",
+      "usd": "plant/usd/Equipment/H101.usd",
+      "glb": "plant/glb/H101.glb",
+      "shell_prim": "HeaterShell",
+      "bytes": 1136
+    },
+    {
+      "equipment_tag": "R101",
+      "usd": "plant/usd/Equipment/R101.usd",
+      "glb": "plant/glb/R101.glb",
+      "shell_prim": "ReactorShell",
+      "bytes": 4884
+    },
+    {
+      "equipment_tag": "D101",
+      "usd": "plant/usd/Equipment/D101.usd",
+      "glb": "plant/glb/D101.glb",
+      "shell_prim": "DrumShell",
+      "bytes": 4336
+    },
+    {
+      "equipment_tag": "C101",
+      "usd": "plant/usd/Equipment/C101.usd",
+      "glb": "plant/glb/C101.glb",
+      "shell_prim": "ColumnShell",
+      "bytes": 5452
+    },
+    {
+      "equipment_tag": "C102",
+      "usd": "plant/usd/Equipment/C102.usd",
+      "glb": "plant/glb/C102.glb",
+      "shell_prim": "ColumnShell",
+      "bytes": 5352
+    },
+    {
+      "equipment_tag": "C103",
+      "usd": "plant/usd/Equipment/C103.usd",
+      "glb": "plant/glb/C103.glb",
+      "shell_prim": "ColumnShell",
+      "bytes": 5352
+    }
+  ]
+}

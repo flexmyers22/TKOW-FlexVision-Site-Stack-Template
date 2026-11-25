@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin portal | Flex-Vision</title>
+  <style>
+    :root { color-scheme: light; }
+    * { box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      background: #f3f4f6;
+      color: #20242b;
+      font: 16px/1.5 Inter, ui-sans-serif, system-ui, sans-serif;
+    }
+    .shell { display: grid; grid-template-columns: 232px minmax(0, 1fr); min-height: 100vh; }
+    .appbar { display: flex; flex-direction: column; gap: 8px; padding: 22px 14px; background: #111318; color: #fff; }
+    .mark { padding: 6px 10px 16px; font-size: 12px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+    .appbar button { width: 100%; padding: 12px; border-radius: 12px; background: transparent; color: #e8eaee; text-align: left; font-size: 13px; }
+    .appbar button[aria-current="page"] { background: #fff; color: #111318; }
+    .sign-out { margin-top: auto; }
+    .sign-out button { background: #fff; color: #111318; text-align: center; }
+    .stage { min-width: 0; }
+    .view { display: none; }
+    .view.active { display: block; }
+    .home, .sheet { width: min(980px, calc(100% - 36px)); margin: 28px auto 48px; }
+    .home h1, .sheet h1 { margin: 0 0 8px; font-size: 32px; letter-spacing: -.03em; }
+    .button-page { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 18px; }
+    .button-page button { min-height: 132px; padding: 22px; border: 1px solid #d5d9e0; border-radius: 18px; background: #fff; color: #111318; font-size: 18px; font-weight: 800; text-align: left; }
+    .button-page button span { display: block; margin-top: 8px; color: #5c6370; font-size: 13px; font-weight: 550; }
+    .sheet { padding: 22px; background: #fff; border: 1px solid #d5d9e0; border-radius: 18px; }
+    .log-list { margin: 0; padding: 0; list-style: none; }
+    .log-list li { display: grid; grid-template-columns: auto auto 1fr; gap: 8px; padding: 8px 0; border-top: 1px solid #d5d9e0; font-size: 12px; }
+    .log-list span, .log-list strong { color: #6d7380; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+    .workspace-frame { width: 100%; height: 100vh; border: 0; display: block; background: #f3f4f6; }
+    #view-twin.active { display: flex; flex-direction: column; height: 100vh; }
+    .twin-bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: center; padding: 10px 12px; background: #fff; border-bottom: 1px solid #d5d9e0; }
+    .twin-bar button[aria-current="page"] { background: #111318; color: #fff; }
+    .twin-bar .status { flex: 1 1 240px; }
+    .twin-frame { flex: 1; height: auto; min-height: 0; }
+    h1 { margin: 0 0 5px; font-size: 19px; }
+    .note { margin: 0 0 16px; color: #22262e; font-size: 12px; }
+    fieldset { border: 0; border-top: 1px solid #d5d9e0; margin: 0; padding: 13px 0 4px; }
+    legend { padding: 0 8px 0 0; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; }
+    label { display: block; margin: 0 0 11px; font-size: 12px; font-weight: 650; }
+    input, textarea, select {
+      display: block;
+      width: 100%;
+      margin-top: 5px;
+      padding: 9px 10px;
+      color: #20242b;
+      background: #f3f4f6;
+      border: 1px solid #d5d9e0;
+      border-radius: 9px;
+      font: inherit;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+    textarea { min-height: 58px; resize: vertical; }
+    .actions { display: flex; align-items: center; gap: 10px; padding-top: 12px; }
+    button { padding: 9px 13px; border: 0; border-radius: 999px; cursor: pointer; font-weight: 750; font-size: 12px; }
+    .save { background: #20242b; color: #fff; }
+    .reset { background: #eceff3; color: #20242b; }
+    .status { color: #22262e; font-size: 11px; }
+    .log-panel { width: min(420px, calc(100vw - 28px)); max-height: min(42vh, 320px); }
+    .log-panel p { margin: 0 0 10px; color: #22262e; font-size: 12px; }
+    .log-panel ul { margin: 0; padding: 0; list-style: none; }
+    .log-panel li { display: grid; grid-template-columns: auto auto 1fr; gap: 8px; padding: 8px 0; border-top: 1px solid #d5d9e0; font-size: 12px; }
+    .log-panel span, .log-panel strong { color: #6d7380; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+    .registry { width: min(1100px, calc(100% - 36px)); margin: 22px auto 48px; padding: 22px; background: #fff; border: 1px solid #d5d9e0; border-radius: 18px; }
+    .registry h1 { font-size: 32px; letter-spacing: -.03em; }
+    .registry-form { display: grid; grid-template-columns: 1.4fr .8fr .9fr 1.1fr auto; gap: 12px; align-items: end; }
+    .registry-form .actions { padding-top: 0; }
+    .tablewrap { overflow-x: auto; margin-top: 18px; }
+    .registry table { width: 100%; border-collapse: collapse; }
+    .registry th, .registry td { padding: 10px 8px; border-top: 1px solid #d5d9e0; text-align: left; font-size: 13px; vertical-align: middle; }
+    .registry th { color: #6d7380; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+    .registry .thumb { width: 84px; height: 56px; object-fit: contain; background: #f7f4ee; border-radius: 8px; }
+    .registry .trash { display: grid; place-items: center; width: 36px; height: 36px; padding: 0; border: 1px solid #d5d9e0; border-radius: 10px; background: #fff; color: #20242b; }
+    .registry .trash svg { width: 16px; height: 16px; }
+    .registry a { color: #111318; font-weight: 750; }
+    .registry .empty { color: #6d7380; }
+    .newsletter-form { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: end; }
+    .newsletter-form .actions, .newsletter-form .image-folder { grid-column: 1 / -1; padding-top: 0; }
+    .image-folder { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; color: #6d7380; font-size: 12px; }
+    .image-folder code { padding: 2px 6px; border-radius: 6px; background: #eceff3; color: #20242b; word-break: break-all; }
+    .image-preview { display: block; width: 220px; max-width: 100%; aspect-ratio: 3 / 2; object-fit: cover; border-radius: 10px; border: 1px solid #d5d9e0; background: #111318; }
+    .image-preview[hidden] { display: none; }
+    .edition-image { display: grid; grid-template-columns: 160px 1fr; gap: 12px; align-items: start; margin: 4px 0 10px; padding: 12px; border-radius: 12px; background: #f6f7f9; }
+    .edition-image .image-preview { width: 160px; }
+    .edition-image .fields { display: grid; gap: 8px; }
+    .edition-image .actions { padding-top: 0; }
+    .edition-list { display: grid; gap: 12px; margin-top: 18px; }
+    .edition { padding: 16px; border: 1px solid #d5d9e0; border-radius: 14px; }
+    .edition h2 { margin: 6px 0; font-size: 18px; letter-spacing: -.02em; }
+    .edition p { margin: 0 0 8px; color: #22262e; font-size: 13px; }
+    .edition .meta { color: #6d7380; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+    .edition .badge { display: inline-block; margin-right: 8px; padding: 2px 8px; border-radius: 999px; background: #eceff3; color: #20242b; }
+    .edition .badge.published { background: #111318; color: #fff; }
+    .edition ul { margin: 0 0 10px; padding-left: 18px; color: #5c6370; font-size: 12px; }
+    .edition .actions { padding-top: 4px; }
+    .mail-panel { margin: 16px 0; padding: 16px; border: 1px solid #d5d9e0; border-radius: 14px; background: #fff; }
+    .mail-panel h2 { margin: 0 0 8px; font-size: 18px; }
+    .mail-panel p { margin: 0 0 8px; color: #22262e; font-size: 13px; }
+    .mail-preview { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(240px, .7fr); gap: 12px; margin-top: 10px; }
+    .mail-preview iframe { width: 100%; height: 460px; border: 1px solid #d5d9e0; background: #f3f4f6; }
+    .mail-preview .mobile { max-width: 360px; }
+    @media (max-width: 860px) {
+      .shell { display: block; }
+      .appbar { position: sticky; top: 0; z-index: 5; flex-direction: row; gap: 8px; overflow-x: auto; padding: 10px; }
+      .mark { display: none; }
+      .appbar button, .sign-out button { width: auto; white-space: nowrap; }
+      .sign-out { margin-top: 0; }
+      .button-page, .registry-form, .newsletter-form, .edition-image, .mail-preview { grid-template-columns: 1fr; }
+      .workspace-frame { height: calc(100vh - 64px); }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="appbar">
+      <div class="mark">Admin portal</div>
+      <button type="button" data-open="home">Home</button>
+      <button type="button" data-open="content">Edit page content</button>
+      <button type="button" data-open="errors">Error log</button>
+      <button type="button" data-open="registry">Product registry</button>
+      <button type="button" data-open="workspace">Product workspace</button>
+      <button type="button" data-open="newsletter">Newsletter</button>
+      <button type="button" data-open="vision">Vision workbench</button>
+      <button type="button" data-open="twin">Digital twin</button>
+      <form class="sign-out" method="post" action="/v1/admin/sign-out">
+        <button type="submit">Sign out</button>
+      </form>
+    </aside>
+    <div class="stage">
+      <section class="view active" id="view-home">
+        <div class="home">
+          <h1>Admin portal</h1>
+          <p class="note">Choose a module. The garment registry is now the product registry. Product workspace opens the CAD-to-manufacturing workbench on this computer. Vision workbench opens the OpenCV surface placement workbench. Digital twin opens the development environment, Omniverse component records, and the toluene plant viewer.</p>
+          <div class="button-page">
+            <button type="button" data-open="content">Edit page content<span>Draft homepage text in this browser.</span></button>
+            <button type="button" data-open="errors">Error log<span>Review messages from this browser session.</span></button>
+            <button type="button" data-open="registry">Product registry<span>Catalog products and add each row to the collection lookbook.</span></button>
+            <button type="button" data-open="workspace">Product workspace<span>Open CAD-to-manufacturing workspace.</span></button>
+            <button type="button" data-open="newsletter">Newsletter<span>Generate editions from the engineering library and approve them for the newsletter page.</span></button>
+            <button type="button" data-open="vision">Vision workbench<span>Open the OpenCV surface placement workbench for field and basketball court advertisement tracking.</span></button>
+            <button type="button" data-open="twin">Digital twin<span>Develop the export package, review Omniverse component records, and open the toluene plant viewer.</span></button>
+          </div>
+        </div>
+      </section>
+      <section class="view" id="view-content">
+        <form class="sheet" id="editor">
+          <h1>Edit page content</h1>
+          <p class="note">Changes save in this browser and appear on the homepage. Newsletter, Collection, and AI Chat keep their current pages.</p>
+          <div id="fields"></div>
+          <div class="actions">
+            <button class="save" type="submit">Save changes</button>
+            <button class="reset" type="button" id="reset">Reset</button>
+            <span class="status" id="status" role="status">Ready</span>
+          </div>
+        </form>
+      </section>
+      <section class="view" id="view-errors">
+        <div class="sheet" role="log" aria-live="polite" aria-relevant="additions">
+          <h1>Error log</h1>
+          <p class="note">Errors and debug messages from this browser session. Error collection from the live site is not configured.</p>
+          <ul class="log-list" id="error-log-list"></ul>
+        </div>
+      </section>
+      <section class="view" id="view-workspace">
+        <iframe class="workspace-frame" title="Product workspace" src="/product-workspace/index.html"></iframe>
+      </section>
+      <section class="view" id="view-twin">
+        <div class="twin-bar">
+          <button type="button" data-twin="development" aria-current="page">Development environment</button>
+          <button type="button" data-twin="omniverse">Omniverse components</button>
+          <button type="button" data-twin="plant">Plant viewer</button>
+          <!--
+            Workspace explanations, hidden from the page:
+            Export records stay in this browser. AI Chat writes the Blender and OpenUSD files from the product package.
+          -->
+        </div>
+        <iframe id="twin-frame" class="workspace-frame twin-frame" title="Digital twin development environment" src="/digital-twin/development/index.html"></iframe>
+      </section>
+      <section class="view" id="view-vision">
+        <iframe class="workspace-frame" title="OpenCV surface placement workbench" src="/opencv-workbench/index.html"></iframe>
+      </section>
+      <section class="view" id="view-newsletter">
+        <div class="registry">
+          <h1>Newsletter</h1>
+          <p class="note">Enter a topic. The site finds matching engineering-library passages and the chosen model writes a cited draft. Pick a comic image to place it as the newsletter banner. Drafts stay here until you publish them. Publishing does not send email. Profile-address delivery is a separate confirmation, and push stays skipped until a provider is configured.</p>
+          <div class="mail-panel" id="newsletter-mail">
+            <h2>Profile email delivery</h2>
+            <p id="newsletter-mail-audience">Loading profile-address counts.</p>
+            <p id="newsletter-mail-schedule"></p>
+            <div class="actions">
+              <button class="reset" type="button" id="newsletter-schedule-toggle">Resume monthly pull</button>
+            </div>
+          </div>
+          <form id="newsletter-form" class="newsletter-form">
+            <label>Topic<input name="topic" required minlength="3" maxlength="200" placeholder="Example: dot grid drawing paper"></label>
+            <label>Model
+              <select name="model" id="newsletter-model">
+                <option value="chatgpt">ChatGPT</option>
+                <option value="grok">Grok</option>
+                <option value="gemini">Gemini</option>
+              </select>
+            </label>
+            <label>Comic image
+              <select name="image" id="newsletter-image" data-image-select>
+                <option value="">No image</option>
+              </select>
+            </label>
+            <label>Image description<input name="alt" maxlength="200" placeholder="Describe the image for screen readers"></label>
+            <div class="image-folder">
+              <img class="image-preview" id="newsletter-image-preview" alt="" hidden>
+              <span>Images come from <code id="newsletter-image-folder">the newsletter image folder</code></span>
+              <button class="reset" type="button" id="newsletter-image-refresh">Refresh folder</button>
+            </div>
+            <div class="actions">
+              <button class="save" type="submit">Generate draft</button>
+            </div>
+          </form>
+          <p class="status" id="newsletter-status" role="status">Ready</p>
+          <div class="edition-list" id="edition-list"></div>
+        </div>
+      </section>
+  <main class="registry view" id="view-registry">
+    <h1>Product registry</h1>
+    <p class="note">Upload a product image to create a registry row. That row is added as a new page on the collection lookbook and stored in the product registry workbook.</p>
+    <form id="collection-form" class="registry-form">
+      <label>Product name<input name="title" required maxlength="120"></label>
+      <label>Category
+        <select name="category">
+          <option>Apparel</option>
+          <option>Flex-Print</option>
+          <option>Emblem</option>
+          <option>Accessory</option>
+          <option>Wearable</option>
+          <option>Watch</option>
+          <option>Cast</option>
+          <option>Mold</option>
+          <option>Furniture</option>
+          <option>Printed part</option>
+          <option>Industrial</option>
+        </select>
+      </label>
+      <label>Colorway<input name="colorway" maxlength="80" placeholder="Unknown"></label>
+      <label>Image<input name="image" type="file" accept="image/png,image/jpeg,image/webp,image/gif" required></label>
+      <div class="actions">
+        <button class="save" type="submit">Add row</button>
+        <span class="status" id="collection-status" role="status">Ready</span>
+      </div>
+    </form>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Product ID</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Colorway</th>
+            <th>Status</th>
+            <th>Lookbook</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody id="registry-rows"></tbody>
+      </table>
+    </div>
+  </main>
+    </div>
+  </div>
+  <script>
+    const STORAGE_KEY = 'flexVisionPageContentV2'
+    const DEFAULTS = {
+      navNewsletter: 'Newsletter',
+      navTeam: 'Team',
+      navServices: 'Services',
+      navProducts: 'Products',
+      navAbout: 'About',
+      navAiChat: 'AI Chat',
+      navProfile: 'Profile',
+      heroEyebrow: 'Engineering • AI • Manufacturing',
+      heroTitle: 'Ideas move from grid to machine.',
+      heroCopy: 'Flex‑Vision connects product design, robotics, and manufacturing into a clear path from concept to build.',
+      heroPrimary: 'Explore services',
+      heroSecondary: 'Meet Flex‑Vision',
+      heroCaptionOne: 'Design systems',
+      heroCaptionTwo: 'Build intelligence',
+      servicesTitle: 'What we build',
+      servicesCopy: 'Connect engineering knowledge to practical tools, digital workflows, and production-ready decisions.',
+      serviceOneTitle: 'Robotics & controls',
+      serviceOneCopy: 'Embedded systems, industrial I/O, machine vision, and automation studies.',
+      serviceTwoTitle: 'CAD to manufacturing',
+      serviceTwoCopy: 'Coordinate-based concepts, product geometry, drawings, and structured handoffs.',
+      serviceThreeTitle: 'Textile & material design',
+      serviceThreeCopy: 'Pattern development, process research, and technical product documentation.',
+      showcaseEyebrow: 'The Flex‑Vision workflow',
+      showcaseTitle: 'One connected view of the work.',
+      showcaseCopy: 'Use this feature panel for the current project, a product collection, or an engineering-library highlight. Replace the art panel with a selected image from the local source folder.',
+      showcaseButton: 'View the banner section',
+      aiEyebrow: 'TKOW engineering workspace',
+      aiTitle: 'AI chatbot',
+      aiCopy: 'This section is the engineering chat. Ask from project evidence, review the library, and use the MATLAB, credential, and piggybank tools in that workspace.',
+      aiButton: 'Open AI chatbot',
+      bannerLabel: 'Flex‑Vision • Engineering in motion',
+      footerCompany: 'Flex‑Vision LLC'
+    }
+    const GROUPS = [
+      ['Navigation', [
+        ['navNewsletter', 'Newsletter link'],
+        ['navTeam', 'Team link'],
+        ['navServices', 'Services link'],
+        ['navProducts', 'Products link'],
+        ['navAbout', 'About link'],
+        ['navAiChat', 'AI Chat link'],
+        ['navProfile', 'Profile button']
+      ]],
+      ['Hero', [
+        ['heroEyebrow', 'Eyebrow'],
+        ['heroTitle', 'Headline', true],
+        ['heroCopy', 'Description', true],
+        ['heroPrimary', 'Primary button'],
+        ['heroSecondary', 'Secondary button'],
+        ['heroCaptionOne', 'Visual caption 1'],
+        ['heroCaptionTwo', 'Visual caption 2']
+      ]],
+      ['Services and cards', [
+        ['servicesTitle', 'Section title'],
+        ['servicesCopy', 'Section introduction', true],
+        ['serviceOneTitle', 'Card 1 title'],
+        ['serviceOneCopy', 'Card 1 text', true],
+        ['serviceTwoTitle', 'Card 2 title'],
+        ['serviceTwoCopy', 'Card 2 text', true],
+        ['serviceThreeTitle', 'Card 3 title'],
+        ['serviceThreeCopy', 'Card 3 text', true]
+      ]],
+      ['Feature panel', [
+        ['showcaseEyebrow', 'Eyebrow'],
+        ['showcaseTitle', 'Title', true],
+        ['showcaseCopy', 'Description', true],
+        ['showcaseButton', 'Button label']
+      ]],
+      ['AI chatbot', [
+        ['aiEyebrow', 'Eyebrow'],
+        ['aiTitle', 'Title', true],
+        ['aiCopy', 'Description', true],
+        ['aiButton', 'Button label']
+      ]],
+      ['Banner and footer', [
+        ['bannerLabel', 'Banner text'],
+        ['footerCompany', 'Footer name']
+      ]]
+    ]
+    const status = document.getElementById('status')
+    const values = { ...DEFAULTS }
+    try {
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null')
+      if (saved && typeof saved === 'object') {
+        for (const key of Object.keys(DEFAULTS)) {
+          if (typeof saved[key] === 'string') values[key] = saved[key]
+        }
+      }
+    } catch { /* keep defaults */ }
+
+    function persist(message) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(values))
+      status.textContent = message
+    }
+
+    const fields = document.getElementById('fields')
+    for (const [title, items] of GROUPS) {
+      const group = document.createElement('fieldset')
+      const legend = document.createElement('legend')
+      legend.textContent = title
+      group.append(legend)
+      for (const [key, label, multiline] of items) {
+        const wrap = document.createElement('label')
+        wrap.append(document.createTextNode(label))
+        const input = document.createElement(multiline ? 'textarea' : 'input')
+        input.id = 'edit-' + key
+        input.value = values[key]
+        input.addEventListener('input', () => {
+          values[key] = input.value
+          persist('Saved in this browser')
+        })
+        wrap.append(input)
+        group.append(wrap)
+      }
+      fields.append(group)
+    }
+
+    document.getElementById('editor').addEventListener('submit', (event) => {
+      event.preventDefault()
+      persist('Changes saved')
+    })
+    document.getElementById('reset').addEventListener('click', () => {
+      localStorage.removeItem(STORAGE_KEY)
+      for (const key of Object.keys(DEFAULTS)) {
+        values[key] = DEFAULTS[key]
+        document.getElementById('edit-' + key).value = DEFAULTS[key]
+      }
+      status.textContent = 'Defaults restored'
+    })
+
+    const registryRows = document.getElementById('registry-rows')
+    function registryCell(value) {
+      const cell = document.createElement('td')
+      cell.textContent = value || 'Unknown'
+      return cell
+    }
+    function renderRegistry(items, slides) {
+      registryRows.replaceChildren()
+      if (!items.length) {
+        const row = document.createElement('tr')
+        const cell = document.createElement('td')
+        cell.colSpan = 8
+        cell.className = 'empty'
+        cell.textContent = 'No rows yet. Upload a product image to create the first lookbook page.'
+        row.append(cell)
+        registryRows.append(row)
+        return
+      }
+      const pageOf = new Map()
+      ;(slides || []).forEach((slide, index) => {
+        const page = index + 1
+        if (slide.garmentId) pageOf.set(slide.garmentId, page)
+        if (slide.id) pageOf.set(slide.id, page)
+      })
+      items.forEach((item) => {
+        const row = document.createElement('tr')
+        const imageCell = document.createElement('td')
+        const img = document.createElement('img')
+        img.className = 'thumb'
+        img.alt = ''
+        img.src = item.image
+        imageCell.append(img)
+        const lookCell = document.createElement('td')
+        if (item.garmentId) {
+          const link = document.createElement('a')
+          const page = pageOf.get(item.garmentId)
+          link.href = '/collection#' + encodeURIComponent(item.garmentId)
+          link.textContent = page ? 'Page ' + String(page).padStart(2, '0') : 'Added'
+          lookCell.append(link)
+        } else lookCell.textContent = 'Added'
+        const deleteCell = document.createElement('td')
+        const remove = document.createElement('button')
+        remove.type = 'button'
+        remove.className = 'trash'
+        remove.setAttribute('aria-label', 'Delete ' + item.title + ' from the lookbook')
+        remove.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16"/><path d="M9 7V5h6v2"/><path d="M8 7l1 12h6l1-12"/><path d="M10 11v5"/><path d="M14 11v5"/></svg>'
+        remove.addEventListener('click', async () => {
+          if (!window.confirm('Delete ' + item.title + ' from the lookbook?')) return
+          remove.disabled = true
+          const response = await fetch('/v1/collection/image', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ garmentId: item.garmentId })
+          })
+          const payload = await response.json().catch(() => null)
+          if (!response.ok) {
+            remove.disabled = false
+            window.alert(payload && payload.error && payload.error.message ? payload.error.message : 'The lookbook row was not deleted.')
+            return
+          }
+          await loadRegistry()
+        })
+        deleteCell.append(remove)
+        row.append(imageCell, registryCell(item.garmentId), registryCell(item.title), registryCell(item.category), registryCell(item.colorway), registryCell(item.status || 'Proposed'), lookCell, deleteCell)
+        registryRows.append(row)
+      })
+    }
+    async function loadRegistry() {
+      const [registryResponse, lookbookResponse] = await Promise.all([
+        fetch('/v1/collection/image'),
+        fetch('/v1/collection/lookbook')
+      ])
+      const registry = registryResponse.ok ? await registryResponse.json().catch(() => null) : null
+      const lookbook = lookbookResponse.ok ? await lookbookResponse.json().catch(() => null) : null
+      renderRegistry(
+        registry && Array.isArray(registry.additions) ? registry.additions : [],
+        lookbook && Array.isArray(lookbook.slides) ? lookbook.slides : []
+      )
+    }
+    const collectionForm = document.getElementById('collection-form')
+    collectionForm.addEventListener('submit', async (event) => {
+        event.preventDefault()
+        const collectionStatus = document.getElementById('collection-status')
+        collectionStatus.textContent = 'Saving'
+        const response = await fetch('/v1/collection/image', { method: 'POST', body: new FormData(collectionForm) })
+        const payload = await response.json().catch(() => null)
+        if (!response.ok) {
+          collectionStatus.textContent = payload && payload.error && payload.error.message ? payload.error.message : 'The image was not saved'
+          return
+        }
+        collectionForm.reset()
+        await loadRegistry()
+        collectionStatus.textContent = 'Row added to the product registry'
+      })
+    loadRegistry()
+
+    const editionList = document.getElementById('edition-list')
+    const newsletterStatus = document.getElementById('newsletter-status')
+    const newsletterForm = document.getElementById('newsletter-form')
+    let mailState = null
+    async function deliveryRequest(method, body) {
+      const response = await fetch('/v1/newsletter/delivery', {
+        method,
+        headers: body ? { 'Content-Type': 'application/json' } : undefined,
+        body: body ? JSON.stringify(body) : undefined
+      })
+      const payload = await response.json().catch(() => null)
+      if (!response.ok) throw new Error(payload && payload.error && payload.error.message ? payload.error.message : 'The delivery request failed.')
+      return payload
+    }
+    function renderMail(payload) {
+      mailState = payload
+      const audience = payload.audience || {}
+      const audienceLine = document.getElementById('newsletter-mail-audience')
+      audienceLine.textContent = audience.error
+        ? audience.error
+        : 'Profile entries: ' + audience.total + ' rows, ' + audience.eligible + ' eligible, ' + audience.unsubscribed + ' unsubscribed, ' + audience.invalid + ' invalid, ' + audience.duplicates + ' duplicates. Addresses stay off this page.'
+      const schedule = payload.schedule || {}
+      document.getElementById('newsletter-mail-schedule').textContent = 'Monthly on day ' + schedule.day_of_month + ' at ' + schedule.send_time + ' ' + schedule.timezone + '. ' + schedule.action + ' ' + (schedule.paused ? 'Paused.' : 'Active.') + ' ' + (schedule.cron_note || '') + (payload.mail_ready ? '' : ' Email sending is not configured on this server.') + ' ' + (payload.push ? payload.push.reason : '')
+      document.getElementById('newsletter-schedule-toggle').textContent = schedule.paused ? 'Resume monthly pull' : 'Pause monthly pull'
+    }
+    document.getElementById('newsletter-schedule-toggle').addEventListener('click', async () => {
+      const button = document.getElementById('newsletter-schedule-toggle')
+      button.disabled = true
+      try {
+        const nextPaused = !(mailState && mailState.schedule && mailState.schedule.paused)
+        const payload = await deliveryRequest('POST', { paused: nextPaused })
+        if (mailState) mailState.schedule = payload.schedule
+        renderMail(Object.assign({}, mailState, { schedule: payload.schedule }))
+        newsletterStatus.textContent = payload.schedule.paused ? 'Monthly profile-address pull paused.' : 'Monthly profile-address pull resumed. It emails only a published edition that has not been submitted.'
+      } catch (error) {
+        newsletterStatus.textContent = error.message
+      } finally {
+        button.disabled = false
+      }
+    })
+    function editionText(tag, className, text) {
+      const node = document.createElement(tag)
+      if (className) node.className = className
+      node.textContent = text
+      return node
+    }
+    async function editionRequest(method, body) {
+      const response = await fetch('/v1/newsletter/editions', {
+        method,
+        headers: body ? { 'Content-Type': 'application/json' } : undefined,
+        body: body ? JSON.stringify(body) : undefined
+      })
+      const payload = await response.json().catch(() => null)
+      if (!response.ok) throw new Error(payload && payload.error && payload.error.message ? payload.error.message : 'The newsletter request failed.')
+      return payload
+    }
+    function editionButton(label, className, onClick) {
+      const button = editionText('button', className, label)
+      button.type = 'button'
+      button.addEventListener('click', async () => {
+        button.disabled = true
+        try {
+          await onClick()
+          await loadEditions()
+        } catch (error) {
+          newsletterStatus.textContent = error.message
+          button.disabled = false
+        }
+      })
+      return button
+    }
+    let folderImages = []
+    const formImage = document.getElementById('newsletter-image')
+    const formPreview = document.getElementById('newsletter-image-preview')
+    function folderImageUrl(file) {
+      return '/v1/newsletter/images?file=' + encodeURIComponent(file)
+    }
+    function showPreview(img, src) {
+      img.hidden = !src
+      if (src) img.src = src
+      else img.removeAttribute('src')
+    }
+    function fillImageSelect(select, selected) {
+      select.replaceChildren(editionText('option', '', 'No image'))
+      select.firstChild.value = ''
+      folderImages.forEach((image) => {
+        const option = editionText('option', '', image.file)
+        option.value = image.file
+        select.append(option)
+      })
+      if (selected && !folderImages.some((image) => image.file === selected)) {
+        const option = editionText('option', '', selected + ' (no longer in folder)')
+        option.value = selected
+        option.disabled = true
+        select.append(option)
+      }
+      select.value = selected || ''
+    }
+    async function loadFolderImages() {
+      const response = await fetch('/v1/newsletter/images')
+      const payload = await response.json().catch(() => null)
+      if (!response.ok) throw new Error(payload && payload.error && payload.error.message ? payload.error.message : 'The image folder could not be read.')
+      folderImages = Array.isArray(payload.images) ? payload.images : []
+      document.getElementById('newsletter-image-folder').textContent = payload.folder
+      const current = formImage.value
+      fillImageSelect(formImage, folderImages.some((image) => image.file === current) ? current : '')
+      showPreview(formPreview, formImage.value ? folderImageUrl(formImage.value) : '')
+    }
+    formImage.addEventListener('change', () => showPreview(formPreview, formImage.value ? folderImageUrl(formImage.value) : ''))
+    document.getElementById('newsletter-image-refresh').addEventListener('click', async () => {
+      try {
+        await loadFolderImages()
+        await loadEditions()
+        newsletterStatus.textContent = folderImages.length ? folderImages.length + ' image' + (folderImages.length === 1 ? '' : 's') + ' in the folder.' : 'The image folder is empty.'
+      } catch (error) {
+        newsletterStatus.textContent = error.message
+      }
+    })
+    function editionImageControls(edition) {
+      const box = editionText('div', 'edition-image', '')
+      const preview = document.createElement('img')
+      preview.className = 'image-preview'
+      preview.alt = ''
+      showPreview(preview, edition.image ? edition.image.src : '')
+      const fields = editionText('div', 'fields', '')
+      const pickLabel = editionText('label', '', 'Comic image')
+      const pick = document.createElement('select')
+      fillImageSelect(pick, edition.image ? edition.image.source_file : '')
+      pick.addEventListener('change', () => showPreview(preview, pick.value ? folderImageUrl(pick.value) : (edition.image ? edition.image.src : '')))
+      pickLabel.append(pick)
+      const altLabel = editionText('label', '', 'Image description')
+      const alt = document.createElement('input')
+      alt.maxLength = 200
+      alt.value = edition.image ? edition.image.alt : ''
+      alt.placeholder = 'Comic illustration for ' + edition.title
+      altLabel.append(alt)
+      const actions = editionText('div', 'actions', '')
+      actions.append(editionButton(edition.image ? 'Update image' : 'Place image', 'save', async () => {
+        if (!pick.value) throw new Error('Choose an image from the folder first.')
+        await editionRequest('PATCH', { id: edition.id, image: pick.value, alt: alt.value })
+        newsletterStatus.textContent = 'Image placed on "' + edition.title + '".' + (edition.status === 'Published' ? ' Open /newsletter to see it.' : ' It shows once the edition is published.')
+      }))
+      if (edition.image) {
+        actions.append(editionButton('Remove image', 'reset', async () => {
+          await editionRequest('PATCH', { id: edition.id, image: null })
+          newsletterStatus.textContent = 'Image removed from "' + edition.title + '".'
+        }))
+      }
+      fields.append(pickLabel, altLabel, actions)
+      box.append(preview, fields)
+      return box
+    }
+    function renderEditions(editions) {
+      editionList.replaceChildren()
+      if (!editions.length) {
+        editionList.append(editionText('p', 'empty', 'No editions yet. Generate the first draft above.'))
+        return
+      }
+      editions.slice().sort((a, b) => (b.created_at_utc || '').localeCompare(a.created_at_utc || '')).forEach((edition) => {
+        const card = document.createElement('article')
+        card.className = 'edition'
+        const meta = editionText('div', 'meta', '')
+        meta.append(editionText('span', 'badge' + (edition.status === 'Published' ? ' published' : ''), edition.status))
+        meta.append(document.createTextNode(edition.category + ' · ' + edition.date + ' · ' + edition.model))
+        card.append(meta, editionText('h2', '', edition.title), editionText('p', '', edition.lead), editionText('p', '', 'Issue line: ' + edition.summary))
+        if (edition.quote) card.append(editionText('p', '', 'Quote: “' + edition.quote.text + '” · ' + edition.quote.cite))
+        card.append(editionImageControls(edition))
+        const sources = document.createElement('ul')
+        if (edition.citations.length) edition.citations.forEach((citation) => sources.append(editionText('li', '', citation.path + ' · ' + citation.section)))
+        else sources.append(editionText('li', '', 'No library citation recorded.'))
+        const actions = editionText('div', 'actions', '')
+        if (edition.status === 'Draft') {
+          actions.append(editionButton('Publish to newsletter', 'save', async () => {
+            await editionRequest('PATCH', { id: edition.id, status: 'Published' })
+            newsletterStatus.textContent = 'Published. Open /newsletter to see it.'
+          }))
+        } else {
+          actions.append(editionButton('Move back to draft', 'reset', async () => {
+            await editionRequest('PATCH', { id: edition.id, status: 'Draft' })
+            newsletterStatus.textContent = 'Moved back to draft. It no longer shows on the newsletter page.'
+          }))
+        }
+        actions.append(editionButton('Delete', 'reset', async () => {
+          if (!window.confirm('Delete "' + edition.title + '"?')) throw new Error('Delete cancelled.')
+          await editionRequest('DELETE', { id: edition.id })
+          newsletterStatus.textContent = 'Edition deleted.'
+        }))
+        if (edition.status === 'Published') card.append(editionDelivery(edition))
+        card.append(sources, actions)
+        editionList.append(card)
+      })
+    }
+    function editionDelivery(edition) {
+      const box = editionText('div', 'mail-panel', '')
+      const batch = mailState && mailState.batches ? mailState.batches[edition.id] : null
+      const test = mailState && mailState.tests ? mailState.tests[edition.id] : null
+      const status = batch
+        ? 'Email ' + batch.status + '. ' + batch.accepted + ' accepted of ' + batch.eligible + ' eligible. Resend acceptance is recorded here; this screen has no delivery receipt.'
+        : 'No profile-address send yet.'
+      box.append(editionText('p', '', status + (test ? ' Last test: ' + test.result + '.' : '') + ' Push skipped.'))
+      const subjectLabel = editionText('label', '', 'Email subject')
+      const subject = document.createElement('input')
+      subject.maxLength = 180
+      subject.value = (batch && batch.subject ? batch.subject : 'New newsletter is live: ' + edition.title).slice(0, 180)
+      subjectLabel.append(subject)
+      const preview = editionText('div', 'mail-preview', '')
+      const desktop = document.createElement('iframe')
+      desktop.title = 'Desktop email preview'
+      const mobile = document.createElement('iframe')
+      mobile.title = 'Mobile email preview'
+      mobile.className = 'mobile'
+      preview.append(desktop, mobile)
+      preview.hidden = true
+      const actions = editionText('div', 'actions', '')
+      const previewButton = editionText('button', 'reset', 'Preview email')
+      previewButton.type = 'button'
+      previewButton.addEventListener('click', async () => {
+        previewButton.disabled = true
+        try {
+          const payload = await deliveryRequest('POST', { id: edition.id, mode: 'preview', subject: subject.value })
+          desktop.srcdoc = payload.preview.html
+          mobile.srcdoc = payload.preview.html
+          preview.hidden = false
+          newsletterStatus.textContent = 'Email preview ready. Subject: ' + payload.preview.subject
+        } catch (error) {
+          newsletterStatus.textContent = error.message
+        } finally {
+          previewButton.disabled = false
+        }
+      })
+      actions.append(previewButton)
+      actions.append(editionButton('Send test to admin inbox', 'reset', async () => {
+        if (!mailState || !mailState.mail_ready) throw new Error('Email sending is not configured on this server.')
+        await deliveryRequest('POST', { id: edition.id, mode: 'test', subject: subject.value })
+        newsletterStatus.textContent = 'Test submitted to the admin inbox. Resend acceptance is not a delivery receipt.'
+      }))
+      actions.append(editionButton('Send to profile emails', 'save', async () => {
+        if (!mailState || !mailState.mail_ready) throw new Error('Email sending is not configured on this server.')
+        if (!mailState.audience || mailState.audience.error) throw new Error(mailState.audience && mailState.audience.error ? mailState.audience.error : 'Profile addresses are not loaded.')
+        if (!window.confirm('Submit "' + edition.title + '" to ' + mailState.audience.eligible + ' eligible profile emails? Push is skipped. America/New_York. Resend acceptance is recorded; this screen does not show delivery receipts.')) {
+          throw new Error('Send cancelled.')
+        }
+        await deliveryRequest('POST', { id: edition.id, mode: 'profile', confirm: true, subject: subject.value })
+        newsletterStatus.textContent = 'Profile-address send submitted. Resend acceptance is not a delivery receipt.'
+      }))
+      box.append(subjectLabel, actions, preview)
+      return box
+    }
+    async function loadEditions() {
+      try {
+        const payload = await editionRequest('GET')
+        try { renderMail(await deliveryRequest('GET')) } catch (error) { newsletterStatus.textContent = error.message }
+        renderEditions(Array.isArray(payload.editions) ? payload.editions : [])
+        const models = payload.models || {}
+        document.querySelectorAll('#newsletter-model option').forEach((option) => {
+          option.textContent = ({ chatgpt: 'ChatGPT', grok: 'Grok', gemini: 'Gemini' }[option.value] || option.value) + (models[option.value] ? '' : ' (no key)')
+        })
+      } catch (error) {
+        editionList.replaceChildren(editionText('p', 'empty', error.message))
+      }
+    }
+    newsletterForm.addEventListener('submit', async (event) => {
+      event.preventDefault()
+      const submit = newsletterForm.querySelector('button[type="submit"]')
+      submit.disabled = true
+      newsletterStatus.textContent = 'Searching the engineering library and writing a draft. This can take a minute.'
+      try {
+        const data = new FormData(newsletterForm)
+        const payload = await editionRequest('POST', { topic: data.get('topic'), model: data.get('model'), image: data.get('image'), alt: data.get('alt') })
+        newsletterStatus.textContent = 'Draft saved: ' + payload.edition.title
+        newsletterForm.reset()
+        showPreview(formPreview, '')
+        await loadEditions()
+      } catch (error) {
+        newsletterStatus.textContent = error.message
+      } finally {
+        submit.disabled = false
+      }
+    })
+    loadFolderImages()
+      .catch((error) => { newsletterStatus.textContent = error.message })
+      .then(loadEditions)
+
+    const logList = document.getElementById('error-log-list')
+    const logs = []
+    function describe(value) {
+      if (value instanceof Error) return value.message.slice(0, 300)
+      if (typeof value === 'string') return value.slice(0, 300)
+      if (typeof value === 'number' || typeof value === 'boolean') return String(value)
+      return 'Recorded a non-text value'
+    }
+    function pushLog(level, message) {
+      logs.unshift({ time: new Date().toLocaleTimeString(), level, message })
+      if (logs.length > 40) logs.pop()
+      logList.replaceChildren(...logs.map((entry) => {
+        const item = document.createElement('li')
+        const time = document.createElement('span')
+        const kind = document.createElement('strong')
+        time.textContent = entry.time
+        kind.textContent = entry.level
+        item.append(time, kind, document.createTextNode(entry.message))
+        return item
+      }))
+    }
+    const originalError = console.error
+    const originalDebug = console.debug
+    console.error = (...args) => {
+      pushLog('error', args.map(describe).join(' '))
+      originalError.apply(console, args)
+    }
+    console.debug = (...args) => {
+      pushLog('debug', args.map(describe).join(' '))
+      originalDebug.apply(console, args)
+    }
+    window.addEventListener('error', (event) => pushLog('error', event.message || 'Script error'))
+    window.addEventListener('unhandledrejection', (event) => pushLog('error', describe(event.reason)))
+    pushLog('debug', 'Debug log ready.')
+
+    const twinSources = {
+      development: { src: '/digital-twin/development/index.html', title: 'Digital twin development environment' },
+      omniverse: { src: '/digital-twin/omniverse/index.html', title: 'Omniverse component production' },
+      plant: { src: 'http://127.0.0.1:3010', title: 'Toluene plant component viewer' },
+    }
+    const twinFrame = document.getElementById('twin-frame')
+    function showTwin(name) {
+      const panel = twinSources[name] || twinSources.development
+      document.querySelectorAll('[data-twin]').forEach((button) => {
+        if (button.getAttribute('data-twin') === (twinSources[name] ? name : 'development')) button.setAttribute('aria-current', 'page')
+        else button.removeAttribute('aria-current')
+      })
+      if (twinFrame.getAttribute('src') !== panel.src) twinFrame.src = panel.src
+      twinFrame.title = panel.title
+      // Workspace explanations stay in source and are not shown beside the buttons.
+    }
+    document.querySelectorAll('[data-twin]').forEach((button) => {
+      button.addEventListener('click', () => showTwin(button.getAttribute('data-twin')))
+    })
+
+    const views = ['home', 'content', 'errors', 'registry', 'workspace', 'newsletter', 'vision', 'twin']
+    function showView(name) {
+      const id = views.includes(name) ? name : 'home'
+      document.querySelectorAll('.view').forEach((view) => view.classList.toggle('active', view.id === 'view-' + id))
+      document.querySelectorAll('.appbar [data-open]').forEach((button) => {
+        if (button.getAttribute('data-open') === id) button.setAttribute('aria-current', 'page')
+        else button.removeAttribute('aria-current')
+      })
+      if (id === 'twin') showTwin(document.querySelector('[data-twin][aria-current="page"]')?.getAttribute('data-twin') || 'development')
+    }
+    document.querySelectorAll('[data-open]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const name = button.getAttribute('data-open')
+        if (location.hash === '#' + name) showView(name)
+        else location.hash = name
+      })
+    })
+    window.addEventListener('hashchange', () => showView(location.hash.slice(1)))
+    showView(location.hash.slice(1) || 'home')
+  </script>
+</body>
+</html>

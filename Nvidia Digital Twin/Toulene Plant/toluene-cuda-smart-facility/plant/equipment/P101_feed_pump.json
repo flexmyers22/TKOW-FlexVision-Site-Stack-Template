@@ -1,0 +1,37 @@
+{
+  "part_number": "TKOW-TOL-PMP-FEED-101-A",
+  "equipment_tag": "P101",
+  "equipment_type": "pump",
+  "process_area": "FEED",
+  "geometry_file": "P101.glb",
+  "excel_sheet": "Equipment",
+  "excel_range": "Equipment!A7:M7",
+  "binary_status": "00000100",
+  "cuda_tile_id": "CUDA_TILE_P101",
+  "kernel_name": "flow_balance_kernel.cu",
+  "memory_block": "P101_BLOCK",
+  "upstream": ["T101"],
+  "downstream": ["H101"],
+  "metadata": {
+    "design_source": "Disproportionation of Toluene senior design PDF",
+    "ocr_pages": [34, 35],
+    "pump_type": "centrifugal",
+    "inlet_pressure_psi": 14.69,
+    "discharge_pressure_psi": 270,
+    "reactor_delivery_psi": 215,
+    "volumetric_flow_m3_s": 0.00145,
+    "hydraulic_power_w": 2557,
+    "brake_power_kw": 3.9,
+    "motor_power_kw": 4.3,
+    "pump_efficiency": 0.65,
+    "motor_efficiency": 0.9,
+    "pressure_loss_psi": {
+      "control_valve": 10,
+      "heat_exchanger": 7.5,
+      "furnace": 32.5,
+      "misc": 5
+    },
+    "capital_cost_usd": 4000,
+    "electricity_cost_usd_yr": 3000
+  }
+}

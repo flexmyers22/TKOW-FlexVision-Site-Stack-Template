@@ -1,0 +1,7 @@
+create table manufacturing_operations (
+    id uuid primary key,
+    part_id uuid,
+    operation_type text,
+    machine_type text,
+    cycle_time numeric
+);

@@ -1,0 +1,7 @@
+create table geometry_features (
+    id uuid primary key,
+    part_id uuid,
+    feature_type text,
+    feature_name text,
+    parameter_data jsonb
+);

@@ -1,0 +1,33 @@
+{
+  "version": "1.0",
+  "hierarchy": [
+    "organizations",
+    "projects",
+    "assets_and_electrical_connections",
+    "telemetry_and_operating_states",
+    "commands_alarms_and_events",
+    "qualification_tests_and_evidence"
+  ],
+  "organization": {
+    "org_id": "ORG-TKOW",
+    "name": "The Tech King of Wakanada / Flex-Vision"
+  },
+  "project": {
+    "project_id": "TKOW-FV-BESS-DT-001",
+    "org_id": "ORG-TKOW",
+    "qualification_boundary": "ac_terminals_pcs_inclusive"
+  },
+  "tables": {
+    "organizations": "organizations",
+    "projects": "projects",
+    "assets": "assets",
+    "connections": "asset_connections",
+    "telemetry": "telemetry_samples",
+    "states": "operating_states",
+    "commands": "commands",
+    "alarms": "alarms",
+    "events": "events",
+    "tests": "qualification_tests",
+    "evidence": "qualification_evidence"
+  }
+}

@@ -1,0 +1,61 @@
+create table toluene_equipment (
+
+  id uuid primary key default uuid_generate_v4(),
+
+  part_number text unique not null,
+
+  equipment_tag text not null,
+
+  equipment_type text not null,
+
+  process_area text,
+
+  geometry_file text,
+
+  excel_sheet text,
+
+  excel_range text,
+
+  binary_status char(8),
+
+  cuda_tile_id text,
+
+  upstream jsonb default '[]',
+
+  downstream jsonb default '[]',
+
+  metadata jsonb default '{}',
+
+  created_at timestamptz default now()
+
+);
+
+
+create table cuda_tiles (
+
+  id uuid primary key default uuid_generate_v4(),
+
+  tile_id text unique not null,
+
+  equipment_tag text,
+
+  kernel_name text,
+
+  memory_block text,
+
+  input_buffer text,
+
+  output_buffer text,
+
+  update_rate_ms int default 100,
+
+  binary_word char(8),
+
+  status text default 'active',
+
+  metadata jsonb default '{}',
+
+  created_at timestamptz default now()
+
+);
+

@@ -1,0 +1,8 @@
+{
+  "part_id":"ARM_001",
+  "part_name":"Robot Arm Base",
+  "geometry_type":"solid",
+  "material":"6061_aluminum",
+  "units":"mm",
+  "version":"1.0.0"
+}

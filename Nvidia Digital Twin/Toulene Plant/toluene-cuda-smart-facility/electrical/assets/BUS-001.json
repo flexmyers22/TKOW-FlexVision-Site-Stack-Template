@@ -1,0 +1,12 @@
+{
+  "asset_id": "BUS-001",
+  "asset_type": "site_ac_bus",
+  "primary_function": "Common electrical connection",
+  "voltage_v": 480,
+  "cuda_tile": "CUDA_TILE_ELECTRICAL",
+  "usd_prim": "/Site/ElectricalSubstation/BUS_001",
+  "comms": {
+    "protocol": "internal",
+    "role": "bus"
+  }
+}

@@ -1,0 +1,36 @@
+[
+  {
+    "id": "ed-yield-2026",
+    "status": "Published",
+    "date": "2026-11-10",
+    "category": "Research brief",
+    "title": "Connect field yield to feedstock quality",
+    "lead": "The 10 November 2026 brief reads Syngenta's 25 August Yield edition as a data-model lesson for the agriculture-first digital twin. A higher yield is not proof of better fiber feedstock.",
+    "summary": "Record crop, treatment, yield, moisture, ash, and residue composition together.",
+    "description": "The 10 November 2026 brief reads Syngenta's 25 August Yield edition as a data-model lesson. Record crop, treatment, yield, moisture, ash, and residue composition together, and do not treat a higher yield as proof of better fiber feedstock.",
+    "quote": {
+      "text": "A higher field yield or a biological input is not evidence that residues will be better fiber or process feedstock.",
+      "cite": "Syngenta The Yield research brief, Rev A · 10 November 2026"
+    },
+    "citations": [],
+    "topic": "Hand-written edition moved from the newsletter page",
+    "model": "Hand-written",
+    "created_at_utc": "2026-11-10T00:00:00Z",
+    "published_at_utc": "2026-11-10T00:00:00Z"
+  },
+  {
+    "id": "ed-wildflower-palette",
+    "status": "Published",
+    "date": "2026-10-01",
+    "category": "Design reference",
+    "title": "A proposed wildflower palette for the TKOW screen",
+    "lead": "The October 1 reference defines a proposed wildflower-inspired digital palette for the TKOW screen workflow.",
+    "summary": "Eight proposed colors for the screen workflow, not measurements of products or flowers.",
+    "description": "The October 1 reference defines a proposed wildflower-inspired digital palette for the TKOW screen workflow. The colors are design selections, not measurements of products or flowers.",
+    "citations": [],
+    "topic": "Hand-written edition moved from the newsletter page",
+    "model": "Hand-written",
+    "created_at_utc": "2026-10-01T00:00:00Z",
+    "published_at_utc": "2026-10-01T00:00:00Z"
+  }
+]

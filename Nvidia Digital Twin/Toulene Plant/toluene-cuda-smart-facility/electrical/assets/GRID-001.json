@@ -1,0 +1,14 @@
+{
+  "asset_id": "GRID-001",
+  "asset_type": "utility_grid",
+  "primary_function": "External voltage and frequency source",
+  "voltage_v": 13800,
+  "cuda_tile": "CUDA_TILE_ELECTRICAL",
+  "usd_prim": "/Site/ElectricalSubstation/GRID_001",
+  "glb": null,
+  "comms": {
+    "protocol": "DNP3",
+    "role": "source",
+    "endpoint": "grid.scada.local:20000"
+  }
+}

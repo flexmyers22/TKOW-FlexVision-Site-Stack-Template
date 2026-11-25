@@ -1,0 +1,116 @@
+{
+  "version": "1.0",
+  "project_id": "TKOW-FV-BESS-DT-001",
+  "description": "Oscillation and transient classification for site power + BESS/PCS digital twin",
+  "applies_to": ["PCS-001", "BESS-001", "BUS-001", "LOAD-AI-001", "GEN-001", "MTR-001"],
+  "cuda_tile": "CUDA_TILE_ENERGY",
+  "classes": [
+    {
+      "class_id": "NORMAL_WAVEFORM",
+      "name": "Normal electrical oscillation",
+      "description": "60 Hz voltage/current waveform",
+      "severity": "normal",
+      "expected": true,
+      "decay": null,
+      "frequency_hz": { "nominal": 60, "band_hz": [59.5, 60.5] },
+      "typical_duration_s": null,
+      "binary_bits": [],
+      "sources": ["PCS-001", "MTR-001", "BUS-001"],
+      "twin_action": "display_waveform"
+    },
+    {
+      "class_id": "NORMAL_TRANSIENT",
+      "name": "Normal transient",
+      "description": "Brief, decaying response after a load change",
+      "severity": "normal",
+      "expected": true,
+      "decay": "decaying",
+      "trigger": "load_change",
+      "typical_duration_s": { "min": 0.01, "max": 2.0 },
+      "binary_bits": [],
+      "sources": ["PCS-001", "LOAD-AI-001", "BESS-001"],
+      "twin_action": "log_event"
+    },
+    {
+      "class_id": "RINGING",
+      "name": "Ringing",
+      "description": "Short oscillation that decreases with time",
+      "severity": "watch",
+      "expected": true,
+      "decay": "decaying",
+      "typical_duration_s": { "min": 0.005, "max": 1.0 },
+      "binary_bits": [],
+      "sources": ["PCS-001", "XFMR-001", "BUS-001"],
+      "twin_action": "log_event"
+    },
+    {
+      "class_id": "SUSTAINED_OSCILLATION",
+      "name": "Sustained oscillation",
+      "description": "Oscillation that does not decay",
+      "severity": "alarm",
+      "expected": false,
+      "decay": "none",
+      "typical_duration_s": { "min": 2.0, "max": null },
+      "binary_bits": ["WARN"],
+      "sources": ["PCS-001", "CTRL-001", "BESS-001"],
+      "twin_action": "set_warn_bit_and_alert"
+    },
+    {
+      "class_id": "CONTROL_HUNTING",
+      "name": "Control hunting",
+      "description": "Repeated switching between control modes",
+      "severity": "alarm",
+      "expected": false,
+      "decay": "none",
+      "signal_domain": "discrete_mode",
+      "indicators": ["control_mode_chatter", "operating_state_chatter"],
+      "binary_bits": ["WARN"],
+      "sources": ["PCS-001", "CTRL-001"],
+      "twin_action": "set_warn_bit_freeze_dispatch"
+    },
+    {
+      "class_id": "MECHANICAL_VIBRATION",
+      "name": "Mechanical vibration",
+      "description": "Physical oscillation from fans, pumps, bearings, or motors",
+      "severity": "watch",
+      "expected": false,
+      "decay": "variable",
+      "signal_domain": "mechanical",
+      "sources": ["GEN-001", "LOAD-PROCESS", "P101", "C101"],
+      "binary_bits": ["WARN"],
+      "twin_action": "route_to_process_maint"
+    }
+  ],
+  "runtime_verdicts": ["STABLE", "RINGING", "HUNTING", "UNSTABLE"],
+  "analysis_pipeline": [
+    "Read P, Q, V, I and frequency",
+    "Remove expected 60 Hz carrier where appropriate",
+    "Measure amplitude and dominant frequencies",
+    "Determine whether oscillation is decaying",
+    "Check control-mode transition count",
+    "Classify: STABLE / RINGING / HUNTING / UNSTABLE"
+  ],
+  "verdict_map": {
+    "STABLE": ["NORMAL_WAVEFORM", "NORMAL_TRANSIENT"],
+    "RINGING": ["RINGING", "MECHANICAL_VIBRATION"],
+    "HUNTING": ["CONTROL_HUNTING"],
+    "UNSTABLE": ["SUSTAINED_OSCILLATION"]
+  },
+  "classification_rules": {
+    "normal_waveform": "Dominant frequency ≈ 60 Hz with stable envelope",
+    "normal_transient": "Step/load event followed by decaying envelope < ~2 s",
+    "ringing": "Short oscillatory burst with decreasing amplitude",
+    "sustained_oscillation": "Oscillatory energy persists without decay beyond threshold",
+    "control_hunting": "≥ N mode changes within T seconds without operator command",
+    "mechanical_vibration": "Non-electrical spectrum correlate (vibration sensor / motor current sidebands)"
+  },
+  "pipeline": [
+    "Read P, Q, V, I, f from PCS-001 / MTR-001",
+    "removeCarrier(60 Hz) on V/I",
+    "amplitude + dominantFrequencies on residual",
+    "measureDecay(envelope)",
+    "countModeTransitions(control_mode)",
+    "verdict STABLE|RINGING|HUNTING|UNSTABLE → WARN if HUNTING/UNSTABLE",
+    "electrical_oscillation_events + Omniverse AlarmPanel"
+  ]
+}

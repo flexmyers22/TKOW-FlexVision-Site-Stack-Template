@@ -1,0 +1,6 @@
+.data
+public/opencv-workbench
+Nvidia Digital Twin
+.env
+.env.*
+!.env.example

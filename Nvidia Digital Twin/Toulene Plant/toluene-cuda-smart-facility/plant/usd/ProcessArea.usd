@@ -1,0 +1,20 @@
+#usda 1.0
+(
+    defaultPrim = "ProcessArea"
+)
+
+def Xform "ProcessArea"
+{
+    def Xform "ReactorArea" (
+        references = @./ReactorArea.usd@
+    )
+    {
+    }
+
+    def Xform "SeparationTrain"
+    {
+        def Xform "C101" ( references = @./Equipment/C101.usd@ ) {}
+        def Xform "C102" ( references = @./Equipment/C102.usd@ ) {}
+        def Xform "C103" ( references = @./Equipment/C103.usd@ ) {}
+    }
+}

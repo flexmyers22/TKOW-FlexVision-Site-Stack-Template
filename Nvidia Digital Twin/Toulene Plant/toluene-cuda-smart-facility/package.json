@@ -1,0 +1,33 @@
+{
+  "name": "toluene-cuda-smart-facility",
+  "version": "1.0.0",
+  "description": "Toluene disproportionation plant digital twin with CUDA tile processing and Supabase",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/api/handler.ts",
+    "db:seed": "tsx scripts/seed-equipment.ts",
+    "plant:run": "tsx scripts/plant-run.ts",
+    "plant:run:csv": "tsx scripts/plant-run-csv.ts",
+    "test:connection": "tsx scripts/test-connection.ts",
+    "export:glb": "tsx scripts/export-glb.ts",
+    "omniverse:sync": "tsx scripts/omniverse-sync.ts",
+    "omniverse:plant": "tsx scripts/omniverse-plant.ts",
+    "electrical:sync": "tsx scripts/electrical-sync.ts",
+    "bess:sync": "tsx scripts/bess-sync.ts",
+    "pcs:sync": "tsx scripts/pcs-sync.ts",
+    "oscillation:demo": "tsx scripts/oscillation-demo.ts",
+    "oscillation:analyze": "tsx scripts/oscillation-analyze.ts",
+    "viewer": "npx --yes serve .",
+    "viewer:main": "npm --prefix ../toluene-facility-viewer run dev"
+  },
+  "dependencies": {
+    "@supabase/server": "^1.3.0",
+    "@supabase/supabase-js": "^2.110.1",
+    "dotenv": "^17.4.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.8.0"
+  }
+}

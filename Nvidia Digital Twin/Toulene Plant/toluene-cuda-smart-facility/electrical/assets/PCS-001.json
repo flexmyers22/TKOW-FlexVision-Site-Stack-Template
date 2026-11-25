@@ -1,0 +1,38 @@
+{
+  "timestamp": "2026-07-27T10:00:00.000-04:00",
+  "asset_id": "PCS-001",
+  "voltage_v": 480,
+  "current_a": 0,
+  "active_power_kw": 0,
+  "reactive_power_kvar": 0,
+  "frequency_hz": 60,
+  "soc_pct": 50,
+  "pcs_temperature_c": null,
+  "current_limit": false,
+  "control_mode": "grid_following",
+  "operating_state": "standby",
+  "alarm_code": null,
+  "binary_status": "00000011",
+  "project_id": "TKOW-FV-BESS-DT-001",
+  "asset_type": "power_conversion_system",
+  "primary_function": "Bidirectional AC/DC control",
+  "parent": "BESS-001",
+  "binary_decoded": {
+    "TELEM": true,
+    "GRID": true,
+    "CHARGE": false,
+    "DISCHARGE": false,
+    "I_LIMIT": false,
+    "ISLAND": false,
+    "WARN": false,
+    "TRIP": false
+  },
+  "cuda_tile": "CUDA_TILE_ENERGY",
+  "usd_prim": "/Site/ElectricalSubstation/BESS_001/PCS_001",
+  "comms": {
+    "protocol": "ModbusTCP",
+    "role": "inverter",
+    "endpoint": "10.20.2.2:502",
+    "unit_id": 11
+  }
+}

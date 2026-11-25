@@ -1,0 +1,183 @@
+{
+  "generated_at": "2026-07-27T16:19:39.075Z",
+  "pipeline": [
+    "Read P, Q, V, I and frequency",
+    "Remove expected 60 Hz carrier where appropriate",
+    "Measure amplitude and dominant frequencies",
+    "Determine whether oscillation is decaying",
+    "Check control-mode transition count",
+    "Classify: STABLE / RINGING / HUNTING / UNSTABLE"
+  ],
+  "pcs_standby_480v_60hz": {
+    "asset_id": "PCS-001",
+    "timestamp": "2026-07-27T16:19:39.073Z",
+    "verdict": "STABLE",
+    "detail_class": "NORMAL_WAVEFORM",
+    "severity": "normal",
+    "metrics": {
+      "carrier_hz": 60,
+      "residual_rms": 0,
+      "peak_amplitude": 0,
+      "dominant_frequencies_hz": [
+        62,
+        422,
+        418
+      ],
+      "decaying": null,
+      "decay_ratio": null,
+      "mode_transition_count": 0,
+      "window_s": 0.4992
+    },
+    "pipeline": [
+      "Read P, Q, V, I and frequency",
+      "Remove expected 60 Hz carrier where appropriate",
+      "Measure amplitude and dominant frequencies",
+      "Determine whether oscillation is decaying",
+      "Check control-mode transition count",
+      "Classify: STABLE / RINGING / HUNTING / UNSTABLE"
+    ],
+    "set_warn_bit": false,
+    "_debug": {
+      "i_rms": 0,
+      "p_rms": 0
+    }
+  },
+  "synthetic": [
+    {
+      "asset_id": "PCS-001",
+      "timestamp": "2026-07-27T16:19:38.932Z",
+      "verdict": "STABLE",
+      "detail_class": "NORMAL_WAVEFORM",
+      "severity": "normal",
+      "metrics": {
+        "carrier_hz": 60,
+        "residual_rms": 0,
+        "peak_amplitude": 0,
+        "dominant_frequencies_hz": [
+          61,
+          59,
+          203
+        ],
+        "decaying": null,
+        "decay_ratio": null,
+        "mode_transition_count": 0,
+        "window_s": 0.9992
+      },
+      "pipeline": [
+        "Read P, Q, V, I and frequency",
+        "Remove expected 60 Hz carrier where appropriate",
+        "Measure amplitude and dominant frequencies",
+        "Determine whether oscillation is decaying",
+        "Check control-mode transition count",
+        "Classify: STABLE / RINGING / HUNTING / UNSTABLE"
+      ],
+      "set_warn_bit": false,
+      "_debug": {
+        "i_rms": 1.4055488004197275e-13,
+        "p_rms": 0
+      }
+    },
+    {
+      "asset_id": "PCS-001",
+      "timestamp": "2026-07-27T16:19:38.940Z",
+      "verdict": "RINGING",
+      "detail_class": "RINGING",
+      "severity": "watch",
+      "metrics": {
+        "carrier_hz": 60,
+        "residual_rms": 10.503385,
+        "peak_amplitude": 35.436775,
+        "dominant_frequencies_hz": [
+          11.67,
+          13.33,
+          10
+        ],
+        "decaying": true,
+        "decay_ratio": 0.0888,
+        "mode_transition_count": 0,
+        "window_s": 0.5992
+      },
+      "pipeline": [
+        "Read P, Q, V, I and frequency",
+        "Remove expected 60 Hz carrier where appropriate",
+        "Measure amplitude and dominant frequencies",
+        "Determine whether oscillation is decaying",
+        "Check control-mode transition count",
+        "Classify: STABLE / RINGING / HUNTING / UNSTABLE"
+      ],
+      "set_warn_bit": false,
+      "_debug": {
+        "i_rms": 0.21882051295942181,
+        "p_rms": 1.0467561808276622
+      }
+    },
+    {
+      "asset_id": "PCS-001",
+      "timestamp": "2026-07-27T16:19:38.953Z",
+      "verdict": "HUNTING",
+      "detail_class": "CONTROL_HUNTING",
+      "severity": "alarm",
+      "metrics": {
+        "carrier_hz": 60,
+        "residual_rms": 0,
+        "peak_amplitude": 0,
+        "dominant_frequencies_hz": [
+          61,
+          59,
+          203
+        ],
+        "decaying": null,
+        "decay_ratio": null,
+        "mode_transition_count": 3,
+        "window_s": 0.9992
+      },
+      "pipeline": [
+        "Read P, Q, V, I and frequency",
+        "Remove expected 60 Hz carrier where appropriate",
+        "Measure amplitude and dominant frequencies",
+        "Determine whether oscillation is decaying",
+        "Check control-mode transition count",
+        "Classify: STABLE / RINGING / HUNTING / UNSTABLE"
+      ],
+      "set_warn_bit": true,
+      "_debug": {
+        "i_rms": 1.4055488004197275e-13,
+        "p_rms": 0
+      }
+    },
+    {
+      "asset_id": "PCS-001",
+      "timestamp": "2026-07-27T16:19:39.069Z",
+      "verdict": "UNSTABLE",
+      "detail_class": "SUSTAINED_OSCILLATION",
+      "severity": "alarm",
+      "metrics": {
+        "carrier_hz": 60,
+        "residual_rms": 17.677669,
+        "peak_amplitude": 25.005218,
+        "dominant_frequencies_hz": [
+          3.33,
+          3.67,
+          3
+        ],
+        "decaying": false,
+        "decay_ratio": 1,
+        "mode_transition_count": 0,
+        "window_s": 2.9992
+      },
+      "pipeline": [
+        "Read P, Q, V, I and frequency",
+        "Remove expected 60 Hz carrier where appropriate",
+        "Measure amplitude and dominant frequencies",
+        "Determine whether oscillation is decaying",
+        "Check control-mode transition count",
+        "Classify: STABLE / RINGING / HUNTING / UNSTABLE"
+      ],
+      "set_warn_bit": true,
+      "_debug": {
+        "i_rms": 0.3682847738458907,
+        "p_rms": 1.7661416959652805
+      }
+    }
+  ]
+}

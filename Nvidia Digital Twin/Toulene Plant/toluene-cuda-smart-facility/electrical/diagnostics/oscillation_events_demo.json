@@ -1,0 +1,111 @@
+{
+  "generated_at": "2026-07-27T16:17:38.998Z",
+  "taxonomy": [
+    {
+      "class_id": "NORMAL_WAVEFORM",
+      "name": "Normal electrical oscillation",
+      "description": "60 Hz voltage/current waveform",
+      "severity": "normal",
+      "expected": true,
+      "decay": null
+    },
+    {
+      "class_id": "NORMAL_TRANSIENT",
+      "name": "Normal transient",
+      "description": "Brief, decaying response after a load change",
+      "severity": "normal",
+      "expected": true,
+      "decay": "decaying"
+    },
+    {
+      "class_id": "RINGING",
+      "name": "Ringing",
+      "description": "Short oscillation that decreases with time",
+      "severity": "watch",
+      "expected": true,
+      "decay": "decaying"
+    },
+    {
+      "class_id": "SUSTAINED_OSCILLATION",
+      "name": "Sustained oscillation",
+      "description": "Oscillation that does not decay",
+      "severity": "alarm",
+      "expected": false,
+      "decay": "none"
+    },
+    {
+      "class_id": "CONTROL_HUNTING",
+      "name": "Control hunting",
+      "description": "Repeated switching between control modes",
+      "severity": "alarm",
+      "expected": false,
+      "decay": "none"
+    },
+    {
+      "class_id": "MECHANICAL_VIBRATION",
+      "name": "Mechanical vibration",
+      "description": "Physical oscillation from fans, pumps, bearings, or motors",
+      "severity": "watch",
+      "expected": false,
+      "decay": "variable"
+    }
+  ],
+  "events": [
+    {
+      "timestamp": "2026-07-27T16:17:38.995Z",
+      "asset_id": "PCS-001",
+      "class_id": "NORMAL_WAVEFORM",
+      "severity": "normal",
+      "frequency_hz": 60,
+      "notes": "Steady 60 Hz waveform",
+      "binary_status": "00000011"
+    },
+    {
+      "timestamp": "2026-07-27T16:17:38.995Z",
+      "asset_id": "PCS-001",
+      "class_id": "NORMAL_TRANSIENT",
+      "severity": "normal",
+      "duration_s": 0.4,
+      "decaying": true,
+      "notes": "Load step on LOAD-AI-001",
+      "binary_status": "00000011"
+    },
+    {
+      "timestamp": "2026-07-27T16:17:38.995Z",
+      "asset_id": "PCS-001",
+      "class_id": "RINGING",
+      "severity": "watch",
+      "duration_s": 0.08,
+      "decaying": true,
+      "notes": "Ringing after breaker close",
+      "binary_status": "00000011"
+    },
+    {
+      "timestamp": "2026-07-27T16:17:38.995Z",
+      "asset_id": "PCS-001",
+      "class_id": "SUSTAINED_OSCILLATION",
+      "severity": "alarm",
+      "duration_s": 5,
+      "decaying": false,
+      "notes": "Undamped power oscillation",
+      "binary_status": "01000011"
+    },
+    {
+      "timestamp": "2026-07-27T16:17:38.995Z",
+      "asset_id": "CTRL-001",
+      "class_id": "CONTROL_HUNTING",
+      "severity": "alarm",
+      "control_mode": "grid_following↔islanded",
+      "notes": "Mode chatter",
+      "binary_status": "01000011"
+    },
+    {
+      "timestamp": "2026-07-27T16:17:38.995Z",
+      "asset_id": "P101",
+      "class_id": "MECHANICAL_VIBRATION",
+      "severity": "watch",
+      "notes": "Pump bearing vibration",
+      "binary_status": "00000011"
+    }
+  ]
+}

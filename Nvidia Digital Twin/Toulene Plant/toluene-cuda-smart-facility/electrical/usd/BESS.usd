@@ -1,0 +1,64 @@
+#usda 1.0
+(
+    defaultPrim = "BESS_001"
+)
+
+def Xform "BESS_001" (
+    assetInfo = {
+        string assetId = "BESS-001"
+        string projectId = "TKOW-FV-BESS-DT-001"
+        string assetType = "battery_energy_storage_system"
+        string cudaTile = "CUDA_TILE_ENERGY"
+        string primaryFunction = "Complete storage asset"
+        string qualificationBoundary = "ac_terminals_pcs_inclusive"
+    }
+)
+{
+    custom string operating_mode = "standby"
+    custom string telemetry_status = "not_connected"
+    custom string binary_status = "00000000"
+    custom double frequency_hz = 60
+    custom double active_power_mw = 0
+    custom double reactive_power_mvar = 0
+    custom double current_a = 0
+    custom bool current_limit_active = 0
+    custom bool grid_connected = 1
+    custom bool island_capable = 1
+    custom bool black_start_capable = 1
+
+    def Mesh "Container" {}
+
+    def Xform "PCS_001" (
+        references = @./PCS.usd@
+        assetInfo = { string assetId = "PCS-001" }
+    ) {}
+
+    def Xform "BAT_RACK_001" (
+        assetInfo = {
+            string assetId = "BAT-RACK-001"
+            string assetType = "battery_rack"
+            string primaryFunction = "Energy storage"
+        }
+    ) {
+        def Mesh "Rack" {}
+    }
+
+    def Xform "BMS_001" (
+        assetInfo = {
+            string assetId = "BMS-001"
+            string assetType = "battery_management_system"
+            string primaryFunction = "Battery monitoring and protection"
+        }
+    ) {}
+
+    def Scope "Sensors" {
+        def Attribute "soc_pct" ( customData = { string sensorTag = "SOC-BESS-001" } )
+        def Attribute "active_power_mw" ( customData = { string sensorTag = "P-BESS-001" } )
+        def Attribute "ac_voltage_v" ( customData = { string sensorTag = "V-BESS-001" } )
+    }
+
+    def Scope "QualificationBoundary" {
+        # AC terminals of PCS are inclusive of twin scope
+        custom string boundary = "ac_terminals_pcs_inclusive"
+    }
+}

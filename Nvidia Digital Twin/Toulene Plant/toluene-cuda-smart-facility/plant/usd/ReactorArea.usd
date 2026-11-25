@@ -1,0 +1,13 @@
+#usda 1.0
+(
+    defaultPrim = "ReactorArea"
+)
+
+def Xform "ReactorArea"
+{
+    def Xform "T101" ( references = @./Equipment/T101.usd@ ) {}
+    def Xform "P101" ( references = @./Equipment/P101.usd@ ) {}
+    def Xform "H101" ( references = @./Equipment/H101.usd@ ) {}
+    def Xform "R101" ( references = @./Equipment/R101.usd@ ) {}
+    def Xform "D101" ( references = @./Equipment/D101.usd@ ) {}
+}

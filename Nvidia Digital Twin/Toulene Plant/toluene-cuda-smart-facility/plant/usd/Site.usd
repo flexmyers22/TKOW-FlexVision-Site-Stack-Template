@@ -1,0 +1,47 @@
+#usda 1.0
+(
+    doc = "TKOW Toluene Plant — Master Site"
+    defaultPrim = "Site"
+    metersPerUnit = 1
+    upAxis = "Z"
+)
+
+def Xform "Site" (
+    assetInfo = {
+        string name = "TKOW Toluene Disproportionation Plant"
+        double latitude = 33.123
+        double longitude = -84.456
+        double elevation = 125.3
+    }
+)
+{
+    def Xform "ProcessAreaA" (
+        references = @./ProcessArea.usd@
+    )
+    {
+    }
+
+    def Xform "TankFarm" {}
+    def Xform "Utilities" (
+        references = @./Utilities.usd@
+    )
+    {
+    }
+    def Xform "ElectricalSubstation" (
+        references = @../../electrical/usd/ElectricalSubstation.usd@
+    )
+    {
+    }
+    def Xform "ControlRoom"
+    {
+        def Xform "AlarmPanel" (
+            assetInfo = {
+                string purpose = "Digital twin alarm display"
+            }
+        )
+        {
+            string[] activeAlarms = []
+        }
+    }
+    def Xform "Warehouse" {}
+}

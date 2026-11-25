@@ -1,0 +1,19 @@
+#usda 1.0
+(
+    defaultPrim = "D101"
+)
+
+def Xform "D101" (
+    assetInfo = {
+        string equipmentTag = "D101"
+        string equipmentType = "flash_drum"
+        string cudaTile = "CUDA_TILE_D101"
+        string glbViewer = "../glb/D101.glb"
+    }
+)
+{
+    def Mesh "DrumShell" {}
+    def Scope "Sensors" {
+        def Attribute "pressure" ( customData = { string sensorTag = "PT103" } )
+    }
+}

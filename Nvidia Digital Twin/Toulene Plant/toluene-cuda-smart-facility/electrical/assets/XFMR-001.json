@@ -1,0 +1,16 @@
+{
+  "asset_id": "XFMR-001",
+  "asset_type": "site_transformer",
+  "primary_function": "Voltage transformation",
+  "voltage_primary_v": 13800,
+  "voltage_secondary_v": 480,
+  "power_kva": 2500,
+  "cuda_tile": "CUDA_TILE_ELECTRICAL",
+  "usd_prim": "/Site/ElectricalSubstation/XFMR_001",
+  "comms": {
+    "protocol": "ModbusTCP",
+    "role": "sensor",
+    "endpoint": "10.20.1.10:502",
+    "unit_id": 1
+  }
+}

@@ -1,0 +1,36 @@
+#usda 1.0
+(
+    defaultPrim = "PCS_001"
+)
+
+def Xform "PCS_001" (
+    assetInfo = {
+        string assetId = "PCS-001"
+        string projectId = "TKOW-FV-BESS-DT-001"
+        string assetType = "power_conversion_system"
+        string primaryFunction = "Bidirectional AC/DC control"
+        string cudaTile = "CUDA_TILE_ENERGY"
+        string parent = "BESS-001"
+    }
+)
+{
+    custom string control_mode = "grid_following"
+    custom string operating_state = "standby"
+    custom string binary_status = "00000011"
+    custom double voltage_v = 480
+    custom double current_a = 0
+    custom double active_power_kw = 0
+    custom double reactive_power_kvar = 0
+    custom double frequency_hz = 60
+    custom double soc_pct = 50
+    custom bool current_limit = 0
+
+    def Mesh "PCSCabinet" {}
+    def Scope "Sensors" {
+        def Attribute "P_ac_kw" ( customData = { string sensorTag = "P-PCS-001" } )
+        def Attribute "V_ac" ( customData = { string sensorTag = "V-PCS-001" } )
+        def Attribute "I_ac" ( customData = { string sensorTag = "I-PCS-001" } )
+        def Attribute "soc_pct" ( customData = { string sensorTag = "SOC-PCS-001" } )
+        def Attribute "frequency_hz" ( customData = { string sensorTag = "F-PCS-001" } )
+    }
+}

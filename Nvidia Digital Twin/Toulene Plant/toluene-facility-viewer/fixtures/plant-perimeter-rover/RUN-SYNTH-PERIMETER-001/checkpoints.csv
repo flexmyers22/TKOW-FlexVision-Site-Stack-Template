@@ -1,0 +1,4 @@
+sim_time_ns,checkpoint_id,event_type
+0,CP-START,route_start
+1500000000,CP-GATE,perimeter_gate
+3000000000,CP-DOCK,inspection_dock

@@ -1,0 +1,15 @@
+{
+  "asset_id": "GEN-001",
+  "asset_type": "generator",
+  "primary_function": "Onsite generation",
+  "voltage_v": 480,
+  "power_kw": 2000,
+  "cuda_tile": "CUDA_TILE_ELECTRICAL",
+  "usd_prim": "/Site/ElectricalSubstation/GEN_001",
+  "comms": {
+    "protocol": "ModbusTCP",
+    "role": "genset",
+    "endpoint": "10.20.1.40:502",
+    "unit_id": 20
+  }
+}

@@ -1,0 +1,12 @@
+#usda 1.0
+(
+    defaultPrim = "Utilities"
+)
+
+def Xform "Utilities"
+{
+    def Xform "Steam" {}
+    def Xform "CoolingWater" {}
+    def Xform "InstrumentAir" {}
+    def Xform "ElectricalMCC" {}
+}

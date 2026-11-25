@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <rect width="320" height="180" fill="#1c2430"/>
+  <rect x="16" y="28" width="288" height="124" fill="#243428" stroke="#d2a15a"/>
+  <text x="160" y="84" text-anchor="middle" fill="#f4f1ea" font-family="Arial" font-size="16">Synthetic camera</text>
+  <text x="160" y="108" text-anchor="middle" fill="#d2a15a" font-family="Arial" font-size="12">West perimeter · 2000 ms · cam-front</text>
+</svg>

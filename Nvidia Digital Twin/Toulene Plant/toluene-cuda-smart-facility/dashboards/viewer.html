@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TKOW Toluene Plant — GLB Viewer</title>
+  <style>
+    * { margin: 0; box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; background: #0d1117; color: #e6edf3; overflow: hidden; }
+    #canvas { width: 100vw; height: 100vh; display: block; }
+    #hud {
+      position: fixed; top: 12px; left: 12px; padding: 12px 16px;
+      background: rgba(13,17,23,0.85); border: 1px solid #30363d; border-radius: 8px;
+      font-size: 13px; max-width: 280px;
+    }
+    #hud h1 { font-size: 14px; margin-bottom: 8px; }
+    #hud select { width: 100%; margin-top: 8px; padding: 6px; background: #161b22; color: #e6edf3; border: 1px solid #30363d; border-radius: 4px; }
+    #status { margin-top: 8px; color: #8b949e; font-size: 12px; }
+  </style>
+  <script type="importmap">
+  { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js", "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/" } }
+  </script>
+</head>
+<body>
+  <div id="hud">
+    <h1>Toluene Plant — Web Viewer</h1>
+    <p>GLB derivatives from USD master scene</p>
+    <select id="asset-select"></select>
+    <div id="status">Loading…</div>
+  </div>
+  <canvas id="canvas"></canvas>
+  <script type="module">
+    import * as THREE from 'three';
+    import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+    const manifest = await fetch('../plant/glb/manifest.json').then((r) => r.json());
+    const select = document.getElementById('asset-select');
+    const status = document.getElementById('status');
+    manifest.assets.forEach((a) => {
+      const opt = document.createElement('option');
+      opt.value = a.glb;
+      opt.textContent = `${a.equipment_tag} (${a.shell_prim})`;
+      select.appendChild(opt);
+    });
+
+    const canvas = document.getElementById('canvas');
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0d1117);
+    const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 500);
+    camera.position.set(8, 6, 12);
+
+    const controls = new OrbitControls(camera, canvas);
+    controls.enableDamping = true;
+
+    scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+    const dir = new THREE.DirectionalLight(0xffffff, 1.2);
+    dir.position.set(10, 20, 10);
+    scene.add(dir);
+    scene.add(new THREE.GridHelper(40, 40, 0x30363d, 0x21262d));
+
+    const loader = new GLTFLoader();
+    let current = null;
+
+    async function loadAsset(path) {
+      if (current) scene.remove(current);
+      status.textContent = `Loading ${path}…`;
+      const gltf = await loader.loadAsync(`../${path}`);
+      current = gltf.scene;
+      scene.add(current);
+      const box = new THREE.Box3().setFromObject(current);
+      const center = box.getCenter(new THREE.Vector3());
+      const size = box.getSize(new THREE.Vector3());
+      const maxDim = Math.max(size.x, size.y, size.z);
+      camera.position.set(center.x + maxDim * 1.5, center.y + maxDim, center.z + maxDim * 1.5);
+      controls.target.copy(center);
+      controls.update();
+      status.textContent = path;
+    }
+
+    select.addEventListener('change', () => loadAsset(select.value));
+    await loadAsset(manifest.assets[0].glb);
+
+    function animate() {
+      requestAnimationFrame(animate);
+      controls.update();
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+</html>

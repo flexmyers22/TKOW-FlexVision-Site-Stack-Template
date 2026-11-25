@@ -1,0 +1,13 @@
+[package]
+title = "TKOW Toluene Twin Refresh"
+version = "1.0.0"
+description = "Polls twin_state.json and applies binary alarm materials to USD prims"
+category = "Digital Twin"
+keywords = ["digital twin", "toluene", "cuda", "binary"]
+
+[dependencies]
+"omni.usd" = {}
+"omni.kit.app" = {}
+
+[[python.module]]
+name = "toluene_twin_refresh"

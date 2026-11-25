@@ -1,0 +1,24 @@
+{
+  "part_number": "TKOW-TOL-TNK-TOLUENE-101-A",
+  "equipment_tag": "T101",
+  "equipment_type": "tank",
+  "process_area": "STORAGE",
+  "geometry_file": null,
+  "excel_sheet": "Equipment",
+  "excel_range": "Equipment!A10:M10",
+  "binary_status": "00000001",
+  "cuda_tile_id": "CUDA_TILE_T101",
+  "kernel_name": "binary_state_kernel.cu",
+  "memory_block": "T101_BLOCK",
+  "upstream": [],
+  "downstream": ["P101"],
+  "metadata": {
+    "design_source": "Disproportionation of Toluene senior design PDF",
+    "ocr_pages": [33, 35],
+    "product": "toluene",
+    "feed_rate_lb_hr": 10000,
+    "molar_flow_lbmol_hr": 108.5,
+    "suction_pressure_psi": 14.69,
+    "temperature_f": 80
+  }
+}

@@ -1,0 +1,134 @@
+{
+  "generated_at": "2026-11-24T02:49:21.362Z",
+  "run_id": "RUN-2026-11-24T02-49-21",
+  "site_prim": "/Site",
+  "usd_scene": "plant/usd/Site.usd",
+  "equipment": [
+    {
+      "tag": "T101",
+      "cuda_tile": "CUDA_TILE_T101",
+      "binary_word": "10010101",
+      "decoded": {
+        "RUN": true,
+        "ALM": false,
+        "MAINT": false,
+        "AUTO": true,
+        "HEAT": false,
+        "FLOW": true,
+        "PRES": false,
+        "LEVEL": true
+      },
+      "shell_prim": "TankShell",
+      "usd_prim": "/Site/ProcessAreaA/ReactorArea/T101/TankShell",
+      "sensors": {
+        "T101_level_pct": 72,
+        "T101_inventory_lb_hr": 10000
+      },
+      "alarms": []
+    },
+    {
+      "tag": "P101",
+      "cuda_tile": "CUDA_TILE_P101",
+      "binary_word": "10010110",
+      "decoded": {
+        "RUN": true,
+        "ALM": false,
+        "MAINT": false,
+        "AUTO": true,
+        "HEAT": false,
+        "FLOW": true,
+        "PRES": true,
+        "LEVEL": false
+      },
+      "shell_prim": "PumpCasing",
+      "usd_prim": "/Site/ProcessAreaA/ReactorArea/P101/PumpCasing",
+      "sensors": {
+        "P101_flow_lb_hr": 10000,
+        "P101_discharge_psi": 270,
+        "P101_motor_kw": 4.3
+      },
+      "alarms": []
+    },
+    {
+      "tag": "H101",
+      "cuda_tile": "CUDA_TILE_H101",
+      "binary_word": "10011010",
+      "decoded": {
+        "RUN": true,
+        "ALM": false,
+        "MAINT": false,
+        "AUTO": true,
+        "HEAT": true,
+        "FLOW": false,
+        "PRES": true,
+        "LEVEL": false
+      },
+      "shell_prim": "HeaterShell",
+      "usd_prim": "/Site/ProcessAreaA/ReactorArea/H101/HeaterShell",
+      "sensors": {
+        "H101_inlet_temp_f": 80,
+        "H101_outlet_temp_f": 1000,
+        "H101_duty_kw": 3848.817
+      },
+      "alarms": [
+        "HIGH_TEMP:1000"
+      ]
+    },
+    {
+      "tag": "R101",
+      "cuda_tile": "CUDA_TILE_R101",
+      "binary_word": "10011110",
+      "decoded": {
+        "RUN": true,
+        "ALM": false,
+        "MAINT": false,
+        "AUTO": true,
+        "HEAT": true,
+        "FLOW": true,
+        "PRES": true,
+        "LEVEL": false
+      },
+      "shell_prim": "ReactorShell",
+      "usd_prim": "/Site/ProcessAreaA/ReactorArea/R101/ReactorShell",
+      "sensors": {
+        "R101_feed_lb_hr": 10000,
+        "R101_conversion_pct": 30,
+        "R101_benzene_lb_hr": 1260,
+        "R101_xylene_lb_hr": 1440,
+        "R101_reactor_temp_f": 1000
+      },
+      "alarms": [
+        "HIGH_TEMP:1000"
+      ]
+    },
+    {
+      "tag": "C101",
+      "cuda_tile": "CUDA_TILE_C101",
+      "binary_word": "10010110",
+      "decoded": {
+        "RUN": true,
+        "ALM": false,
+        "MAINT": false,
+        "AUTO": true,
+        "HEAT": false,
+        "FLOW": true,
+        "PRES": true,
+        "LEVEL": false
+      },
+      "shell_prim": "ColumnShell",
+      "usd_prim": "/Site/ProcessAreaA/SeparationTrain/C101/ColumnShell",
+      "sensors": {
+        "C101_feed_lb_hr": 2700,
+        "C101_column_diameter_m": 5.29,
+        "C101_tray_count": 69,
+        "C101_reflux_ratio": 5,
+        "C101_overhead_recovery_pct": 95
+      },
+      "alarms": []
+    }
+  ],
+  "active_alarms": [
+    "H101: HIGH_TEMP:1000",
+    "R101: HIGH_TEMP:1000"
+  ]
+}

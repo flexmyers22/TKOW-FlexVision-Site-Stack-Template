@@ -1,0 +1,3 @@
+sim_time_ns,sensor_id,frame_path
+0,cam-front,frames/cam-front-000.svg
+2000000000,cam-front,frames/cam-front-200.svg

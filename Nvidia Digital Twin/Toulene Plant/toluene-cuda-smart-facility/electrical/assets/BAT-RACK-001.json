@@ -1,0 +1,15 @@
+{
+  "asset_id": "BAT-RACK-001",
+  "asset_type": "battery_rack",
+  "primary_function": "Energy storage",
+  "energy_kwh": 2000,
+  "parent": "BESS-001",
+  "cuda_tile": "CUDA_TILE_ENERGY",
+  "usd_prim": "/Site/ElectricalSubstation/BESS_001/BAT_RACK_001",
+  "comms": {
+    "protocol": "CAN",
+    "role": "rack",
+    "endpoint": "can0",
+    "node_id": 1
+  }
+}

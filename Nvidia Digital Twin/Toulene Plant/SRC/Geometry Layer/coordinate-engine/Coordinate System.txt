@@ -1,0 +1,10 @@
+create table coordinate_systems (
+    id uuid primary key,
+    part_id uuid,
+    origin_x numeric,
+    origin_y numeric,
+    origin_z numeric,
+    rotation_x numeric,
+    rotation_y numeric,
+    rotation_z numeric
+);

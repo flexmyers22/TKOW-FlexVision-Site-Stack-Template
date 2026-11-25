@@ -1,0 +1,19 @@
+{
+  "asset_id": "CTRL-001",
+  "asset_type": "site_controller",
+  "primary_function": "Supervisory dispatch and mode control",
+  "modes": [
+    "grid_following",
+    "islanded",
+    "bess_peak_shave",
+    "ai_buffer"
+  ],
+  "cuda_tile": "CUDA_TILE_ELECTRICAL",
+  "usd_prim": "/Site/ElectricalSubstation/CTRL_001",
+  "comms": {
+    "protocol": "MQTT",
+    "role": "supervisor",
+    "endpoint": "mqtt://10.20.0.1:1883",
+    "topic_prefix": "tkow/power/"
+  }
+}

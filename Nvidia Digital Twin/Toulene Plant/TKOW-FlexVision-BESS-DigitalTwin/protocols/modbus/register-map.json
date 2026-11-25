@@ -1,0 +1,16 @@
+{
+  "PCS-001": {
+    "host": "10.20.2.2",
+    "port": 502,
+    "unit_id": 11,
+    "registers": {
+      "voltage_v": 0,
+      "current_a": 2,
+      "active_power_kw": 4,
+      "reactive_power_kvar": 6,
+      "frequency_hz": 8,
+      "soc_pct": 10,
+      "binary_status": 12
+    }
+  }
+}

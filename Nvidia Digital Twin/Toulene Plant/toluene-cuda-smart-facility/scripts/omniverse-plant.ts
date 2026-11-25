@@ -1,0 +1,144 @@
+import { mkdir, writeFile } from 'node:fs/promises';
+import { join } from 'node:path';
+import '../src/loadEnv.js';
+import { getAdminClient } from '../src/db/supabaseServer.js';
+import { writeProcessHistory, samplesFromUnitOutputs } from '../src/services/historian.js';
+import {
+  buildTwinStateFromRun,
+  formatTwinSummary,
+  writeTwinState,
+} from '../src/services/omniverseBridge.js';
+import { runPlantSimulation, type PlantRunOptions } from '../src/services/plantRunner.js';
+
+function parseOptions(): PlantRunOptions & { skipOmniverse?: boolean } {
+  const opts: PlantRunOptions & { skipOmniverse?: boolean } = {};
+  const tankIdx = process.argv.indexOf('--tank-level');
+  if (tankIdx !== -1 && process.argv[tankIdx + 1]) {
+    opts.tankLevelPct = Number(process.argv[tankIdx + 1]);
+  }
+  if (process.argv.includes('--no-omniverse')) opts.skipOmniverse = true;
+  return opts;
+}
+
+async function syncOmniverse(
+  result: ReturnType<typeof runPlantSimulation>,
+  equipment: Awaited<ReturnType<typeof loadEquipment>>
+) {
+  const state = buildTwinStateFromRun(result, equipment);
+  const outPath = await writeTwinState(state);
+  console.log('=== Omniverse Twin State ===\n');
+  console.log(`State file: ${outPath}`);
+  console.log(`USD scene:  plant/usd/Site.usd`);
+  for (const line of formatTwinSummary(state)) console.log(line);
+  if (state.active_alarms.length) {
+    console.log(`\nActive alarms (${state.active_alarms.length}):`);
+    for (const a of state.active_alarms) console.log(`  • ${a}`);
+  }
+  console.log('\nIn Omniverse Kit Script Editor, run:');
+  console.log('  exec(open("omniverse/action_graph/run_twin_refresh.py").read())');
+}
+
+async function loadEquipment(supabase: ReturnType<typeof getAdminClient>) {
+  const [{ data: equipment, error: eqErr }, { data: tiles, error: tileErr }] =
+    await Promise.all([
+      supabase
+        .from('toluene_equipment')
+        .select(
+          'equipment_tag, equipment_type, process_area, binary_status, cuda_tile_id, upstream, downstream, metadata'
+        )
+        .order('equipment_tag'),
+      supabase
+        .from('cuda_tiles')
+        .select('tile_id, equipment_tag, kernel_name, memory_block, update_rate_ms, binary_word')
+        .order('equipment_tag'),
+    ]);
+  if (eqErr) throw eqErr;
+  if (tileErr) throw tileErr;
+  if (!equipment?.length) throw new Error('No equipment found — run seeds first');
+  return { equipment, tiles: tiles ?? [] };
+}
+
+async function main() {
+  const options = parseOptions();
+  const supabase = getAdminClient();
+  const { equipment, tiles } = await loadEquipment(supabase);
+
+  console.log('\n=== Toluene Omniverse Plant ===\n');
+  if (options.tankLevelPct != null) {
+    console.log(`Tank level override: ${options.tankLevelPct}%\n`);
+  }
+  console.log(`Loaded ${equipment.length} equipment, ${tiles.length} CUDA tiles\n`);
+
+  const result = runPlantSimulation(equipment, tiles, options);
+
+  for (const unit of result.units) {
+    const icon = unit.status === 'ok' ? '✓' : '✗';
+    const signals = Object.entries(unit.decoded_out)
+      .filter(([, on]) => on)
+      .map(([k]) => k)
+      .join(', ');
+    console.log(`${icon} ${unit.equipment_tag} [${unit.kernel_name}]`);
+    console.log(`   ${unit.message}`);
+    console.log(`   binary: ${unit.binary_in} → ${unit.binary_out}  (${signals || 'none'})`);
+    console.log(`   outputs: ${JSON.stringify(unit.outputs)}\n`);
+  }
+
+  for (const unit of result.units) {
+    await supabase
+      .from('toluene_equipment')
+      .update({ binary_status: unit.binary_out })
+      .eq('equipment_tag', unit.equipment_tag);
+
+    const tileId = equipment.find((e) => e.equipment_tag === unit.equipment_tag)?.cuda_tile_id;
+    if (tileId) {
+      await supabase.from('cuda_tiles').update({ binary_word: unit.binary_out }).eq('tile_id', tileId);
+    }
+  }
+
+  const runtimeRows = result.units.map((unit) => ({
+    Equipment: unit.equipment_tag,
+    'Key output': unit.message,
+  }));
+
+  const { error: runtimeErr } = await supabase.from('Equipment Runtime Data').insert(runtimeRows);
+  if (runtimeErr) {
+    console.warn('Warning: could not log runtime data:', runtimeErr.message);
+  } else {
+    console.log(`Logged ${runtimeRows.length} rows to Equipment Runtime Data`);
+  }
+
+  const historyRows = result.units.flatMap((unit) =>
+    samplesFromUnitOutputs(unit.equipment_tag, unit.outputs)
+  );
+  if (historyRows.length > 0) {
+    const { count, error: histErr } = await writeProcessHistory(supabase, historyRows);
+    if (histErr) {
+      console.warn('Warning: could not log process_history:', histErr);
+    } else {
+      console.log(`Logged ${count} samples to process_history`);
+    }
+  }
+
+  const runsDir = join(process.cwd(), 'runs');
+  await mkdir(runsDir, { recursive: true });
+  const reportPath = join(runsDir, `${result.run_id}.json`);
+  await writeFile(reportPath, JSON.stringify(result, null, 2));
+
+  console.log('\n=== Summary ===');
+  console.log(`Run ID:     ${result.run_id}`);
+  console.log(`Units:      ${result.summary.total_units}`);
+  console.log(`Alarms:     ${result.summary.alarms}`);
+  console.log(`Feed:       ${result.summary.feed_rate_lb_hr} lb/hr`);
+  console.log(`Conversion: ${result.summary.reactor_conversion_pct}%`);
+  console.log(`Report:     ${reportPath}`);
+  console.log(`Status:     ${result.summary.alarms === 0 ? 'PASS' : 'FAIL'}\n`);
+
+  if (!options.skipOmniverse) {
+    await syncOmniverse(result, equipment);
+  }
+}
+
+main().catch((err) => {
+  console.error('Omniverse plant failed:', err.message);
+  process.exit(1);
+});

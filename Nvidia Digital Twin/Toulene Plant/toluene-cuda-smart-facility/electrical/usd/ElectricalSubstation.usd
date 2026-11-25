@@ -1,0 +1,66 @@
+#usda 1.0
+(
+    defaultPrim = "ElectricalSubstation"
+    metersPerUnit = 1
+    upAxis = "Z"
+    doc = "TKOW Site Power + BESS digital twin — GRID-001 through CTRL-001"
+)
+
+def Xform "ElectricalSubstation" (
+    assetInfo = {
+        string name = "Site Power System"
+        string cudaTile = "CUDA_TILE_ELECTRICAL"
+    }
+)
+{
+    def Xform "GRID_001" (
+        assetInfo = { string assetId = "GRID-001"; string assetType = "utility_grid" }
+    ) {}
+
+    def Xform "XFMR_001" (
+        assetInfo = { string assetId = "XFMR-001"; string assetType = "site_transformer" }
+    ) {
+        def Mesh "Tank" {}
+    }
+
+    def Xform "SWGR_001" (
+        assetInfo = { string assetId = "SWGR-001"; string assetType = "main_switchgear" }
+    ) {
+        def Mesh "Cubicle" {}
+    }
+
+    def Xform "BUS_001" (
+        assetInfo = { string assetId = "BUS-001"; string assetType = "site_ac_bus" }
+    ) {}
+
+    def Xform "MTR_001" (
+        assetInfo = { string assetId = "MTR-001"; string assetType = "electrical_meter" }
+    ) {}
+
+    def Xform "GEN_001" (
+        assetInfo = { string assetId = "GEN-001"; string assetType = "generator" }
+    ) {
+        def Mesh "Genset" {}
+    }
+
+    def Xform "LOAD_AI_001" (
+        assetInfo = { string assetId = "LOAD-AI-001"; string assetType = "ai_compute_load"; string cudaTile = "CUDA_TILE_ENERGY" }
+    ) {}
+
+    def Xform "LOAD_PROCESS" (
+        assetInfo = { string assetId = "LOAD-PROCESS"; string assetType = "process_load" }
+    ) {}
+
+    def Xform "RELAY_001" (
+        assetInfo = { string assetId = "RELAY-001"; string assetType = "protection_relay"; string cudaTile = "CUDA_TILE_SAFETY" }
+    ) {}
+
+    def Xform "CTRL_001" (
+        assetInfo = { string assetId = "CTRL-001"; string assetType = "site_controller" }
+    ) {}
+
+    def Xform "BESS_001" (
+        references = @./BESS.usd@
+        assetInfo = { string assetId = "BESS-001"; string assetType = "battery_energy_storage_system" }
+    ) {}
+}

@@ -1,0 +1,103 @@
+{
+  "record_type": "simulation_run",
+  "schema_version": "1.0",
+  "run_id": "RUN-SYNTH-PERIMETER-001",
+  "status": "Planned",
+  "source": {
+    "project": "MAVS",
+    "repository": "https://github.com/Mississippi-State-University-OTM/MAVS",
+    "branch": "main",
+    "reference_commit": "18c22932015789a19d37258f27afff77c59bf6b2",
+    "executed_commit": "Unknown",
+    "kind": "synthetic_fixture"
+  },
+  "scenario": {
+    "scenario_id": "SCN-PLANT-PERIMETER-001",
+    "config_refs": [
+      "poses.csv",
+      "frame_index.csv",
+      "checkpoints.csv"
+    ],
+    "scene_ref": "Fictional toluene plant perimeter",
+    "vehicle_ref": "Low-speed inspection rover",
+    "sensor_set": [
+      "cam-front"
+    ],
+    "coordinate_frame": "ENU",
+    "units": "m",
+    "route": "From the indoor rover parking stall, outside the other plant areas, with CP-START, CP-GATE, and CP-DOCK"
+  },
+  "execution": {
+    "runtime_version": "Unknown",
+    "platform": "Unknown",
+    "seed": "Unknown",
+    "started_utc": "Unknown",
+    "completed_utc": "Unknown",
+    "exit_state": "Unknown"
+  },
+  "inputs": [
+    {
+      "path": "poses.csv",
+      "sha256": "df67aa5e9bc74ba0f541a7cbc8394674989890a5070a373f4d8690c1742c7dc0"
+    },
+    {
+      "path": "frame_index.csv",
+      "sha256": "b2678a8d83c1042b26dac3bf4bd25f325b65389da750ff3d0979db6bd4fb7300"
+    },
+    {
+      "path": "checkpoints.csv",
+      "sha256": "b17db66b48718836cc7dffe0e86ec570e3851d9a62750fcc5486373626f5118d"
+    },
+    {
+      "path": "validation.json",
+      "sha256": "a96ead042d4a8fe8b6c6735e883c454f1a632cd816bb0910f4845c6dff00c544"
+    },
+    {
+      "path": "frames/cam-front-000.svg",
+      "sha256": "27ffcf49daea25d8825f2836750d6462b8d1f18761f5a74f638013c4c1e5cdf1"
+    },
+    {
+      "path": "frames/cam-front-200.svg",
+      "sha256": "75ca28cfda5b2c00847ac802a248dc42466d19922d5b8ddca7f4ce44bbe902ce"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "poses.csv",
+      "role": "pose"
+    },
+    {
+      "path": "frame_index.csv",
+      "role": "frame_index"
+    },
+    {
+      "path": "checkpoints.csv",
+      "role": "checkpoint"
+    },
+    {
+      "path": "validation.json",
+      "role": "validation"
+    }
+  ],
+  "validation": {
+    "result": "Pending",
+    "checks": [
+      "MAVS-11",
+      "MAVS-13"
+    ],
+    "evidence_refs": [
+      "validation.json"
+    ]
+  },
+  "provenance": {
+    "assumptions": [
+      "This run is a synthetic fixture. MAVS has not been executed.",
+      "Coordinates are ENU meters. The viewer overlay is a display mapping and is not a verified OpenUSD alignment.",
+      "The route starts and ends at the indoor rover parking stall and stays outside the other plant area pads. Vehicle parking is a separate exterior spot. The markers are relative, not surveyed coordinates."
+    ],
+    "source_refs": [
+      "https://github.com/Mississippi-State-University-OTM/MAVS/commit/18c22932015789a19d37258f27afff77c59bf6b2"
+    ],
+    "revision": "Rev C"
+  }
+}

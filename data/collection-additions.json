@@ -1,0 +1,112 @@
+[
+  {
+    "title": "Mini-Shard Heart",
+    "category": "Apparel",
+    "image": "/lookbook/mini-shard-heart-mwfnruu5.png",
+    "fit": "contain",
+    "garmentId": "REG-MWFNRUU7",
+    "colorway": "Unknown",
+    "status": "Proposed",
+    "source": "garment-registry"
+  },
+  {
+    "title": "Big-Heart",
+    "category": "Apparel",
+    "image": "/lookbook/big-heart-mwfnsclm.png",
+    "fit": "contain",
+    "garmentId": "REG-MWFNSCLO",
+    "colorway": "Unknown",
+    "status": "Proposed",
+    "source": "garment-registry"
+  },
+  {
+    "title": "Earthtone_celebration",
+    "category": "Apparel",
+    "image": "/lookbook/earthtone-celebration-mwfnwt2p.png",
+    "fit": "contain",
+    "garmentId": "REG-MWFNWT2T",
+    "colorway": "Unknown",
+    "status": "Proposed",
+    "source": "garment-registry"
+  },
+  {
+    "title": "Raised_stamp_collard",
+    "category": "Apparel",
+    "image": "/lookbook/raised-stamp-collard-mwfnxv7a.png",
+    "fit": "contain",
+    "garmentId": "REG-MWFNXV7E",
+    "colorway": "Unknown",
+    "status": "Proposed",
+    "source": "garment-registry"
+  },
+  {
+    "title": "Raised_longjohn",
+    "category": "Apparel",
+    "image": "/lookbook/raised-longjohn-mwfnyfk1.png",
+    "fit": "contain",
+    "garmentId": "REG-MWFNYFK6",
+    "colorway": "Unknown",
+    "status": "Proposed",
+    "source": "garment-registry"
+  },
+  {
+    "title": "Banner_fv",
+    "category": "Apparel",
+    "image": "/lookbook/banner-fv-mwfol2sf.png",
+    "fit": "contain",
+    "garmentId": "REG-MWFOL2SI",
+    "colorway": "Unknown",
+    "status": "Proposed",
+    "source": "garment-registry"
+  },
+  {
+    "title": "Ladies_flexprint",
+    "category": "Apparel",
+    "image": "/lookbook/ladies-flexprint-mwfom3uv.png",
+    "fit": "contain",
+    "garmentId": "REG-MWFOM3UY",
+    "colorway": "Unknown",
+    "status": "Proposed",
+    "source": "garment-registry"
+  },
+  {
+    "title": "Earthtone_fv",
+    "category": "Apparel",
+    "image": "/lookbook/earthtone-fv-mwfomzad.png",
+    "fit": "contain",
+    "garmentId": "REG-MWFOMZAI",
+    "colorway": "Unknown",
+    "status": "Proposed",
+    "source": "garment-registry"
+  },
+  {
+    "title": "Swim_fv",
+    "category": "Apparel",
+    "image": "/lookbook/swim-fv-mwfoo5ks.png",
+    "fit": "contain",
+    "garmentId": "REG-MWFOO5KU",
+    "colorway": "Unknown",
+    "status": "Proposed",
+    "source": "garment-registry"
+  },
+  {
+    "title": "Shard_print_necklace",
+    "category": "Accessory",
+    "image": "/lookbook/shard-print-necklace-mwfpz8r2.png",
+    "fit": "contain",
+    "garmentId": "REG-MWFPZ8R7",
+    "colorway": "Unknown",
+    "status": "Proposed",
+    "source": "garment-registry"
+  },
+  {
+    "title": "Custom_parlay_design",
+    "category": "Wearable",
+    "image": "/lookbook/custom-parlay-design-mwgtavhr.png",
+    "fit": "contain",
+    "garmentId": "REG-MWGTAVHV",
+    "colorway": "Unknown",
+    "status": "Proposed",
+    "source": "garment-registry"
+  }
+]

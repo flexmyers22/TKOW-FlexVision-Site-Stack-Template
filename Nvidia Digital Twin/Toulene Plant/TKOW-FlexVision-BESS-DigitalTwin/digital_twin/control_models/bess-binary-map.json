@@ -1,0 +1,25 @@
+{
+  "asset_ids": ["BESS-001", "PCS-001"],
+  "project_id": "TKOW-FV-BESS-DT-001",
+  "bit_order": "LSB = bit 0 (rightmost in binary_status string)",
+  "bits": [
+    { "bit": 0, "mask": "00000001", "code": "TELEM", "label": "Telemetry active" },
+    { "bit": 1, "mask": "00000010", "code": "GRID", "label": "Grid connected" },
+    { "bit": 2, "mask": "00000100", "code": "CHARGE", "label": "Battery charging" },
+    { "bit": 3, "mask": "00001000", "code": "DISCHARGE", "label": "Battery discharging" },
+    { "bit": 4, "mask": "00010000", "code": "I_LIMIT", "label": "Current limit active" },
+    { "bit": 5, "mask": "00100000", "code": "ISLAND", "label": "Island mode active" },
+    { "bit": 6, "mask": "01000000", "code": "WARN", "label": "Warning present" },
+    { "bit": 7, "mask": "10000000", "code": "TRIP", "label": "Trip or emergency shutdown" }
+  ],
+  "examples": {
+    "idle_grid_telem": "00000011",
+    "pcs_standby_grid_following": "00000011",
+    "charging": "00000111",
+    "discharging": "00001011",
+    "islanded": "00100001",
+    "current_limit_discharge": "00011011",
+    "warning": "01000011",
+    "trip": "10000000"
+  }
+}

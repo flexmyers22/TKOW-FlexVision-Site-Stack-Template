@@ -1,0 +1,80 @@
+{
+  "version": "1.1",
+  "pipeline": [
+    "Field Sensors",
+    "PLC",
+    "Supabase",
+    "Binary Compiler",
+    "CUDA Tile Engine",
+    "omniverse/runtime/twin_state.json",
+    "Action Graph",
+    "USD Scene Graph",
+    "Digital Twin Refresh"
+  ],
+  "runtime_state_file": "omniverse/runtime/twin_state.json",
+  "site_prim": "/Site",
+  "binary_bits": {
+    "RUN": 7,
+    "ALM": 6,
+    "MAINT": 5,
+    "AUTO": 4,
+    "HEAT": 3,
+    "FLOW": 2,
+    "PRES": 1,
+    "LEVEL": 0
+  },
+  "materials": {
+    "normal": { "color": [0.45, 0.48, 0.52], "emissive": [0, 0, 0] },
+    "alarm": { "color": [1.0, 0.1, 0.1], "emissive": [0.8, 0.05, 0.05] },
+    "thermal": { "color": [0.9, 0.4, 0.1], "emissive": [0.6, 0.2, 0.0] },
+    "offline": { "color": [0.25, 0.25, 0.28], "emissive": [0, 0, 0] }
+  },
+  "binary_to_usd": [
+    {
+      "bit": "ALM",
+      "action": "SetMaterialAlarm",
+      "material": "alarm",
+      "target_template": "{usd_prim}"
+    },
+    {
+      "bit": "HEAT",
+      "action": "SetThermalEmissive",
+      "material": "thermal",
+      "condition": "sensor R101_outlet_temp_f > 450 OR decoded.HEAT == true",
+      "target": "/Site/ProcessAreaA/ReactorArea/R101/ReactorShell"
+    },
+    {
+      "bit": "RUN",
+      "action": "SetMaterialNormal",
+      "material": "normal",
+      "when_false": "SetMaterialOffline",
+      "target_template": "{usd_prim}"
+    }
+  ],
+  "equipment_prims": {
+    "T101": "/Site/ProcessAreaA/ReactorArea/T101/TankShell",
+    "P101": "/Site/ProcessAreaA/ReactorArea/P101/PumpCasing",
+    "H101": "/Site/ProcessAreaA/ReactorArea/H101/HeaterShell",
+    "R101": "/Site/ProcessAreaA/ReactorArea/R101/ReactorShell",
+    "D101": "/Site/ProcessAreaA/ReactorArea/D101/DrumShell",
+    "C101": "/Site/ProcessAreaA/SeparationTrain/C101/ColumnShell",
+    "C102": "/Site/ProcessAreaA/SeparationTrain/C102/ColumnShell",
+    "C103": "/Site/ProcessAreaA/SeparationTrain/C103/ColumnShell"
+  },
+  "alarm_display": {
+    "prim": "/Site/ControlRoom/AlarmPanel",
+    "attribute": "activeAlarms",
+    "format": "{equipment_tag}: {alarm_type}"
+  },
+  "example_alarm_chain": {
+    "trigger": "R101 Temperature > 450°F",
+    "steps": [
+      "Sensor TT103 updates process_history",
+      "omniverse-sync.ts sets alarms: ['HIGH_TEMP:1000']",
+      "Binary ALM bit set on CUDA_TILE_R101",
+      "Action Graph reads twin_state.json",
+      "apply_binary_state sets R101/ReactorShell material to alarm red",
+      "AlarmPanel prim updated in Omniverse UI"
+    ]
+  }
+}

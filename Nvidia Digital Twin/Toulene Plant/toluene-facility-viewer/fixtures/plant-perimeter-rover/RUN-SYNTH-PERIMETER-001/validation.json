@@ -1,0 +1,15 @@
+{
+  "run_id": "RUN-SYNTH-PERIMETER-001",
+  "checks": [
+    {
+      "check_id": "MAVS-11",
+      "result": "Pass",
+      "evidence_ref": "lib/mavs-contract.test.ts import of this synthetic fixture"
+    },
+    {
+      "check_id": "MAVS-13",
+      "result": "Pass",
+      "evidence_ref": "lib/mavs-contract.test.ts replay timing against this synthetic fixture"
+    }
+  ]
+}

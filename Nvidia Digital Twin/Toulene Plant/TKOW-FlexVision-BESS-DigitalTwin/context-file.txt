@@ -1,0 +1,33 @@
+TKOW FlexVision BESS Digital Twin
+Project: TKOW-FV-BESS-DT-001
+Facility context: Flex-Vision / TKOW site power + AI compute load buffer
+
+Information model
+Organizations
+    ↓
+Projects
+    ↓
+Assets and electrical connections
+    ↓
+Telemetry and operating states
+    ↓
+Commands, alarms, and events
+    ↓
+Qualification tests and evidence
+
+Org: ORG-TKOW
+Project: TKOW-FV-BESS-DT-001 (ac_terminals_pcs_inclusive)
+
+Scope
+- Digital twin of BESS-001 with PCS-001 (AC terminals, PCS-inclusive qualification)
+- Site power assets: GRID-001 … CTRL-001
+- Telemetry: P, Q, V, I, f, SOC, binary status
+- Oscillation analysis → STABLE|RINGING|HUNTING|UNSTABLE
+- Modes: grid_following, islanded, black_start, bess_peak_shave, ai_buffer
+- Protocols: Modbus TCP, MQTT, OPC UA, IEC61850/DNP3
+
+Current PCS sample (2026-07-27T10:00:00-04:00)
+- grid_following / standby · 480 V · 0 kW · 60 Hz · SOC 50% · binary 00000011
+
+BESS-001
+- standby · telemetry not_connected until Modbus/CTRL live · island + black-start capable

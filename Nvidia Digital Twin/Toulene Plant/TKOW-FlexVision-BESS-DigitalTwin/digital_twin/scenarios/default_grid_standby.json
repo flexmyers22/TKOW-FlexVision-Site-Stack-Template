@@ -1,0 +1,14 @@
+{
+  "scenario_id": "default_grid_standby",
+  "project_id": "TKOW-FV-BESS-DT-001",
+  "pcs": {
+    "control_mode": "grid_following",
+    "operating_state": "standby",
+    "binary_status": "00000011"
+  },
+  "bess": {
+    "operating_mode": "standby",
+    "telemetry_status": "not_connected"
+  },
+  "expected_verdict": "STABLE"
+}

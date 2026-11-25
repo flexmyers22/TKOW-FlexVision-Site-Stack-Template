@@ -1,0 +1,10 @@
+create table geometry_metrics (
+    id uuid primary key,
+    part_id uuid,
+    volume_mm3 numeric,
+    mass_g numeric,
+    center_of_gravity_x numeric,
+    center_of_gravity_y numeric,
+    center_of_gravity_z numeric,
+    surface_area_mm2 numeric
+);
